@@ -9,3 +9,4 @@ chap/*.aux
 *.log
 *.synctex
 *.dvi
+*.pdf

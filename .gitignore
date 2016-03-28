@@ -1,0 +1,11 @@
+*.aux
+chap/*.aux
+*.bbl
+*.blg
+*.out
+*.bcf
+*.xml
+*.toc
+*.log
+*.synctex
+*.dvi

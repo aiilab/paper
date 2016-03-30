@@ -3,49 +3,22 @@
 % Copyright (c) 2008-2009 solvethis
 % Copyright (c) 2010-2015 Casper Ti. Vector
 % Public domain.
-%
-% 使用前请先仔细阅读 pkuthss 和 biblatex-caspervector 的文档，
-% 特别是其中的 FAQ 部分和用红色强调的部分。
-% 两者可在终端/命令提示符中用
-%   texdoc pkuthss
-%   texdoc biblatex-caspervector
-% 调出。
+% Author: zhang xuewu
+% Date: 2016-03-29
 
-% 采用了自定义的（包括大小写不同于原文件的）字体文件名，
-% 并改动 ctex.cfg 等配置文件的用户请自行加入 nofonts 选项；
-% 其它用户不用加入 nofonts 选项，加入之后反而会产生错误。
-%
-% 图书馆要求电子版论文的目录必须为黑色，
-% 且某些教务要求打印版论文的文字部分为纯黑色而非灰度打印，
-% 【因此最终打印和提交论文前，请将“colorlinks”改为“nocolorlinks”。】
-\documentclass[GBK, colorlinks]{pkuthss}
-
-% 使用 biblatex 排版参考文献，并规定其格式。
-%
-% 如果无法使用 biber，可以把“backend = biber”改为“backend = bibtex”，
-% 并改用 bibtex 产生参考文献，详见 pkuthss 的文档。
-% 使用 biber 时，请去掉所有的 sorting 选项，否则会出错。
-%
-% 默认按照引用顺序排序（“sorting = none”），详见 biblatex-caspervector 的文档
-% （因为是默认设置所以其实不用写，不过出于完备性的考虑仍然在这里列出）。
-% 若需要按照英文文献在前，中文文献在后排序，请设置“sorting = ecnty”；
-% 若需要按照中文文献在前，英文文献在后排序，请设置“sorting = centy”。
-\usepackage[backend = biber, style = caspervector, gbk, sorting = none]{biblatex}
-% 提供近似于学校所要求的 Times New Roman / Arial 的字体。
+\documentclass[GBK, nocolorlinks]{pkuthss}
+\usepackage[backend = biber, style = caspervector, gbk, sorting =none]{biblatex} %文文献在前，中文文献在后排序，请设置“sorting = ecnty”；反之请设置“sorting = centy”。
 \usepackage[defaultsups]{newtxtext}
 \usepackage{newtxmath}
-% 产生 originauth.tex 里的 \square。
-\usepackage{amssymb}
+\usepackage{amssymb} % 产生 originauth.tex 里的 \square。
 
-% 按学校要求设定参考文献列表中的条目之内及之间的距离。
 \setlength{\bibitemsep}{3bp}
-% 对于 linespread 值的计算过程有兴趣的同学可以参考 pkuthss-extra.sty。
 \renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
 
 % 设定文档的基本信息。
 \pkuthssinfo{
 	cthesisname = {硕士研究生学位论文}, ethesisname = {Graduate Thesis},
-	ctitle = {智能监控环境下复杂姿态人脸检测与识别系统}, 
+	ctitle = {智能监控环境下复杂姿态人脸检测与识别系统},
     etitle = {Pose Varied Face Detection and Recognition System In Intelligent Surveillance},
 	cauthor = {张学武},
 	eauthor = {Xuewu Zhang},
@@ -60,28 +33,59 @@
 % 导入参考文献数据库（注意不要省略“.bib”）。
 \addbibresource{thesis.bib}
 
-
+% 正文
 \begin{document}
 	% 以下为正文之前的部分，默认不进行章节编号。
 	\frontmatter
+
 	% 此后到下一 \pagestyle 命令之前不排版页眉或页脚。
 	\pagestyle{empty}
 
 	% 自动生成标题页。
 	\maketitle
+
 	% 版权声明。
 	\include{chap/copyright}
 
 	% 此后到下一 \pagestyle 命令之前正常排版页眉和页脚。
 	\cleardoublepage
 	\pagestyle{plain}
+
 	% 重置页码计数器，用大写罗马数字排版此部分页码。
 	\setcounter{page}{0}
 	\pagenumbering{Roman}
 
 	% 中英文摘要。
 	\include{chap/abstract}
-	% 自动生成目录。
+
+	%% 自动生成目录。
+    \makeatletter
+    \renewcommand*\l@chapter[2]{%
+      \ifnum \c@tocdepth >\m@ne
+        \addpenalty{-\@highpenalty}%
+        \vskip 1.0em \@plus\p@
+        \setlength\@tempdima{1.5em}%
+        \begingroup
+          \parindent \z@ \rightskip \@pnumwidth
+          \parfillskip -\@pnumwidth
+          \leavevmode \bfseries
+          \advance\leftskip\@tempdima
+          \hskip -\leftskip
+          #1\nobreak
+          \xleaders\hbox{$\m@th
+            \mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+            mu$}\hfill%
+          \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+          \penalty\@highpenalty
+        \endgroup
+      \fi}
+    \renewcommand*\l@section{\@dottedtocline{1}{1.5em}{2.3em}}
+    \renewcommand*\l@subsection{\@dottedtocline{2}{3.8em}{3.2em}}
+    \renewcommand*\l@subsubsection{\@dottedtocline{3}{7.0em}{4.1em}}
+    \renewcommand*\l@paragraph{\@dottedtocline{4}{10em}{5em}}
+    \renewcommand*\l@subparagraph{\@dottedtocline{5}{12em}{6em}}
+    \def\@dotsep{0.1}
+    \makeatother
 	\tableofcontents
 
 	% 以下为正文部分，默认要进行章节编号。
@@ -121,7 +125,6 @@
 	% 此后不排版页眉或页脚。
 	\cleardoublepage
 	\pagestyle{empty}
-
 	% 原创性声明和使用授权说明。
 	\include{chap/originauth}
 \end{document}

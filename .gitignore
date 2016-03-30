@@ -1,5 +1,5 @@
 *.aux
-chap/*.aux
+./chap/*.aux
 *.bbl
 *.blg
 *.out

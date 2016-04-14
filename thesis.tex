@@ -12,7 +12,12 @@
 \usepackage{newtxmath}
 \usepackage{amssymb} % 产生 originauth.tex 里的 \square。
 \usepackage{indentfirst} %首段缩进
-
+\usepackage{bicaption} % 双语标题
+\DeclareCaptionOption{english}[]{%
+    \renewcommand\figurename{Figure}%
+    \renewcommand\tablename{Table}}
+\captionsetup[bi-second]{english}
+\usepackage{graphicx,amsfonts,stfloats,color,multirow,booktabs,epsfig,pdfpages}
 \setlength{\bibitemsep}{3bp}
 \renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
 

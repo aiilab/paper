@@ -16,10 +16,259 @@
 
 \section{人脸检测和识别中的特征}
 \subsection{Haar-Like特征}
+（1）Haar-Like特征简介。
+
+Haar-like特征最早是由Papageorgiou等应用于人脸表示，Viola和Jones在此基础上，使用3种类型4种形式的特征。在人脸检测的过程中，需要AdaBoost级联分类器，分类器的训练则要在图像中选取一些简单特征，这些抽取的特征由各个矩形特征组成，称为Haar特征。Haar特征是计算机视觉领域一种常用的特征描述算子，基本Haar特征原型只有四种，而扩展的类Haar特征分为三类：边缘特征、线性特征和中心特征，它们组合成为特征模板。如图\ref{fig_haar}所示\supercite{ExtendHaar}。
+\begin{figure}[!h] \centering
+  \includegraphics[width=.6\textwidth]{figure/fig_haar.eps}
+  \bicaption[类Haar特征]{类Haar特征~\label{fig_haar}}{Haar-like features}
+\end{figure}
+图中特征模板内有白色和黑色区域，分别对应于正权值和负权值，即特征值为白色矩形像素灰度值的和减去黑色矩形像素灰度值的和。Haar特征值反映了图像的灰度变化情况。例如：脸部的一些特征能由矩形特征简单的描述，如：眼睛要比脸颊颜色要深，鼻梁两侧比鼻梁颜色要深，嘴巴比周围颜色要深等。但矩形特征只对一些简单的图形结构，如边缘、线段较敏感，所以只能描述特定走向（水平、垂直、对角）的结构。通过改变特征模板的大小和位置，可在图像子窗口中穷举出大量的特征。上图的特征模板称为“特征原型”；特征原型在图像子窗口中扩展（平移伸缩）得到的特征称为“矩形特征”；矩形特征的值称为“特征值”。矩形特征可位于图像任意位置，大小也可以任意改变，所以矩形特征值是矩形模版类别、矩形位置和矩形大小这三个因素的函数。故类别、大小和位置的变化，使得很小的检测窗口含有非常多的矩形特征，如：在$24\times24$像素大小的检测窗口内矩形特征数量可以达到16万个。这样就有两个问题需要解决了：（1）如何快速计算那么多的特征？（2）哪些矩形特征才是对分类器分类最有效的？Viola和Jones在人脸检测当中提出了通过积分图快速计算haar-like特征，通过Adaboost进行特征选择。
+
+（2）积分图的快速计算。
+
+积分图的概念最早是由Paul Viola等人提出的，并被应用到实时的对象检测框架中。对于一个灰度图像而言，其积分图也是一张图，只不过这个图跟普通的灰度图，彩色图稍有不同。这是因为，一般我们说的灰度图、彩色图，都是相机拍摄到的真实物体在某个时刻的真实画面。而积分图虽然也可以理解为一张图，但该图上任意一点(x,y)的值是指从灰度图像的左上角与当前点所围成的举行区域内所有像素点灰度值之和。积分图的表示方法对Haar特征的快速计算有重要意义。积分图表示方法如图\ref{fig_itegral}所示。
+\begin{figure}[!h] \centering
+  \includegraphics[width=.6\textwidth]{figure/fig_itegral.eps}
+  \bicaption[积分图]{积分图~\label{fig_itegral}}{Integral image}
+\end{figure}
+
+在这个积分图像中，每一点的值表示图像中该点位置左上部分区域内的所有像素的灰度值积分。如公式\ref{equ_integral}所示。
+\begin{equation}
+ii(x,y) = \sum_{x'\leq x,y'\leq y}i(x',y')
+\label{equ_integral}
+\end{equation}
+其中$ii(x,y)$是图像中$(x,y)$点的像素灰度值积分，$i(x',y')$是图像中$(x',y')$点的像素灰度值。如果计算积分图像中某一区域的像素灰度值积分，则由该区域四个顶点对应的积分值作相应的加减运算得到。例如，区域D的积分$S_{D}$可由图像中1，2，3，4点的积分值$S_{1}$，$S_{2}$，$S_{3}$，$S_{4}$计算得到，即:
+\begin{equation}
+S_{D} = S_{4} + S_{1} - S_{2} -S_{3}
+\end{equation}
+
+图像中每点的积分值保存在内存中，计算某区域积分值变成了简单的加减运算，不必重新计算该区域像素和，计算消耗的时间是常量，所以不管图像尺寸如何，积分图表示方法可以降低特征值的计算复杂度。
+
 \subsection{LBP特征}
+（1）基本LBP
+
+LBP(Local Binary Pattern)是一种用来描述图像局部纹理特征的算子。原始LBP由Ojala\supercite{Ojala2002Gray}等人于1996年提出，用来提取纹理图像的特征，并且验证了它在纹理分类中的强大能力。由于其在纹理分类中优良的有效性及其计算简单，且对单调的灰度变化具有不变性等特点，它也被普遍应用于人脸检测、人脸识别以及表情分析和背景建模等领域。基本的LBP算子定义为在$3\times3$的窗口内，以窗口中心像素为阈值，将相邻的8个像素的灰度值与其进行比较，若周围像素值大于中心像素值，则该像素点的位置被标记为1，否则为0。这样，$3\times3$领域内的8个点可产生8bit的无符号数，即得到该窗口的LBP值，并用这个值来反映该区域的纹理信息. 如图\ref{fig_lbp_1}所示。
+\begin{figure}[!h] \centering
+  \includegraphics[width=.7\textwidth]{figure/fig_lbp_1.eps}
+  \bicaption[LBP]{基本LBP算子示意图~\label{fig_lbp_1}}{Illustration of basic LBP}
+\end{figure}
+
+上述十进制的形式可以用一个8比特的一个字节来表示，其表达式为：
+\begin{equation}
+LBP(x_c,y_c)=\sum_{n=0}^{7}s(i_n-i_c)2^n
+\label{equ_lbp}
+\end{equation}
+其中，对于像素点位置$(x_c,y_c)$，其对应的像素的值为$i_c$，并作为中心点位置，将有8个像素点$i_n(n=0，1,2...7)$对其依次环绕，左上角为第一个像素点。二值化处理函数定义为：
+\begin{equation}
+s(x)=\left\{\begin{matrix}
+1 &  if &  x\geq 0\\
+0 &  if &  x < 0
+\end{matrix}\right.
+\label{equ_lbp2}
+\end{equation}
+下图\ref{fig_lbp_img}展示了一副人脸图片经过LBP算子运算之后得到的图像。
+\begin{figure}[!h] \centering
+  \includegraphics[width=.7\textwidth]{figure/fig_lbp_img.eps}
+  \bicaption[LBP]{原始图像（左）经LBP算子处理后的图像（右）~\label{fig_lbp_img}}{Original image (left) processed by the LBP operator (right).}
+\end{figure}
+
+（2）多尺度LBP
+
+Ojala等人在后续工作中又对基本的LBP算子进行了拓展，使得邻域的范围不单局限在$3\times3$ 的邻域。如图\ref{fig_lbp_2}所示. 为了避免图像旋转中LBP值变化的缺陷提出了旋转不变模式的LBP，更进一步得到了等价模式的LBP。使用圆形邻域以及双线性差值的方法就可以将LBP算子扩展到任意圆半径和任意邻域像素数目，使用表示$LBP_{P,R}$方法来表示领域参数，$P$ 表示邻域像素个数，$R$表示领域的圆周半径, 图\ref{fig_lbp_2}分别依次给出了$LBP_{8,1}$、$LBP_{8,2}$和$LBP_{8,2.5}$三种模式。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.7\textwidth]{figure/fig_lbp_2.eps}
+  \bicaption[LBP-2]{三种多尺度LBP~\label{fig_lbp_2}}{Three type of multi-scale LBP}
+\end{figure}
+
+（3）旋转不变LBP
+
+邻域有$P$点的$LBP$算子可以产生$2^P$种不同的模式，每个模式对应着$P$个相邻像素所组成的$2^P$个不同的二进制值。当图像发生旋转时，$P$个相邻像素也将绕着中心点沿圆形邻域的圆周旋转一定的角度，因此会使得$LBP_{P,R}$值发生改变。为了避免这个缺陷，Ojala又对$LBP_{P,R}$值进行重新定义，提出了具有旋转不变性的局部二值模式为：
+\begin{equation}
+LBP^{ri}_{P,R}=min\left \{ ROR(LBP_{P,R},i)|i=0,1,\cdots ,p-1 \right \}
+\label{equ_lbp3}
+\end{equation}
+上式中，$LBP^{ri}_{P,R}$代表旋转不变 LBP 算子，$ROR(x,i)$为定义在$P$位数值$x$上的$i$位循环右移。如果对应图像采样的像素点来说，也就是对这$P$个像素点按照顺时针方向转动$i$次。由公式看出，对于那些不断旋转得到的$LBP$模式取其最小值就是$LBP$的旋转不变模式。引入旋转不变模式定义后，使得LBP纹理特征对于图像旋转表现得更加鲁棒并且也减少了LBP模式的种类。
+
+（4）LBP等价模式
+尽管$LBP^{ri}_{P,R}$在理论上旋转不变性的性质，但在实际的应用中，并不具有很强的分类能力. 这主要是因为具有旋转不变性的$LBP^{ri}_{P,R}$的不同模式的出现频率差异非常大造成的，其中有些特定的LBP模式出现频率达90\%以上，大大超过其它模式的出现频率。即模式中，对应二进制串0和1的跳变次数为0或者只有两次跳变，这些特定的 LBP 模式被称为等价模式(Uniform LBP)。而对应的非等价模式，即为模式中对应二进制串0和1的跳变次数大于两次\supercite{Marcel2006On}。 如图\ref{fig_lbp_3}, 给出了等价模式和非等价模式的例子。
+\begin{figure}[!h] \centering
+  \includegraphics[width=.7\textwidth]{figure/fig_lbp_3.eps}
+  \bicaption[LBP-3]{等价模式与非等价模式示例~\label{fig_lbp_3}}{Examples of uniform and nonuniform patterns}
+\end{figure}
+采用了等价模式后，二进制模式大大减少，模式的数量从最开始的$2^P$种，减少到了$P(P-1)+2$种. 实验表明，等价模式的LBP算子不受图像旋转和平移的影响，能够有效地表达纹理特征，又能起到降维的作用，并且对暗点、亮点、平滑区域、边缘等也具有较好的描述能力。
+
 \subsection{HOG特征}
-\subsection{SIFT特征}
+HOG(Histogram of Oriented Gradient)特征由Navneet Dalal和Bill Triggs于2005年提出\supercite{Dalal2005Histograms}，应用于行人检测问题。。在该特征被提出后，同样在物体检测(Object Detection)研究中得到了应用。由于HOG特征在Object Detection领域取得了巨大的成功，它逐渐被扩展用于图像处理和模式识别的其他领域，比如：行为分析，场景分类，图像检索等等。HOG特征有很多优点,其本质在于在一副图像中，局部目标的表象和形状能够被梯度或边缘的方向密度分布很好地描述。首先，由于HOG是在图像的局部方格单元上操作，所以它对图像几何的和光学的形变都能保持很好的不变性，这两种形变只会出现在更大的空间领域上。其次，在粗的空域抽样、精细的方向抽样以及较强的局部光学归一化等条件下，只要行人大体上能够保持直立的姿势，可以容许行人有一些细微的肢体动作，这些细微的动作可以被忽略而不影响检测效果。因此HOG特征是特别适合于做图像中的人体检测的。目前，学术界将HOG特征分为HOG和FHOG这两种，下面将分别介绍。
+
+（1）原始HOG特征
+
+对图片计算原始的HOG特征包括了梯度的计算，块和细胞的分割，归一化特征权重和全局扫描图像这四个部分，下面将分别介绍这四个部分。
+
+梯度计算。某像素点$(x,y)$点的梯度包括水平方向梯度$G_x$和垂直方向梯度$G_y$。其由公式\ref{equ_hog_Gx} 和公式\ref{equ_hog_Gy} 分别确定。最常用的方法是：首先用$[-1,0,1]$梯度算子对原图像做卷积运算，得到$x$方向（水平方向，以向右为正方向）的梯度分量gradscalx，然后用$[1,0,-1]^T$梯度算子对原图像做卷积运算，得到$y$方向（竖直方向，以向上为正方向）的梯度分量gradscaly。然后再用以上公式计算该像素点的梯度大小和方向。
+\begin{equation}
+G_x(x,y)=H(x+1,y)-H(x-1,y)
+\label{equ_hog_Gx}
+\end{equation}
+\vspace{-4ex}
+\begin{equation}
+G_y(x,y)=H(x,y+1)-H(x,y-1)
+\label{equ_hog_Gy}
+\end{equation}
+
+其中，$H(x,y)$表示在像素点$(x,y)$处的像素值。求导操作不仅能够捕获轮廓，人影和一些纹理信息，还能进一步弱化光照的影响。根据梯度值的计算，可以得到图像中像素点(x,y)的梯度大小和方向分别为：
+\begin{equation}
+G(x,y)=\sqrt{G_x(x,y)^2+G_y(x,y)^2}
+\label{equ_hog_am}
+\end{equation}
+\vspace{-3ex}
+\begin{equation}
+\alpha (x,y)=tan^{-1}(\frac{G_y(x,y)}{G_x(x,y)})
+\label{equ_hog_direc}
+\end{equation}
+
+Block和Cell。计算出来图像所有像素点的梯度之后，需要做进一步的梯度统计，用到的统计单元就是Block和Cell，它们之间的对应关系如图\ref{fig_hog}所示：
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.4\textwidth]{figure/fig_hog.eps}
+  \bicaption[HOG]{Block和Cell的关系~\label{fig_hog}}{Relationship between Block and Cell}
+\end{figure}
+可以看出，一个Block实际上是由若干个Cell组成的，每个Cell其实是统计出来的基于方向的梯度直方图。梯度直方图又可以分为无向直方图$B_1$（Contrast Insensitive）和有向直方图$B_2$（Contrast Sensitive）：
+\begin{equation}
+B_1(x,y)=round(\frac{p\theta(x,y)}{\pi})mod~p
+\label{equ_hist}
+\end{equation}
+\vspace{-3ex}
+\begin{equation}
+B_1(x,y)=round(\frac{p\theta(x,y)}{2\pi})mod~p
+\label{equ_hog_hist2}
+\end{equation}
+这里统一使用$B$来表示$B_1$和$B_2$。在图\ref{fig_hog}中，如果计算的是无向直方图(Contrast Insensitive)，则$0\circ-360\circ$被平均分成了8份（p=8），$0\circ-22.5\circ$和$180\circ-202.5\circ$可以被视为一个通道，以此类推，这样的话，每个通道占用$45\circ$。如果计算的是有向直方图(Contrast Sensitive)，则$0\circ-360\circ$被平均分了16份$（p=16）$，每个通道占用$22.5\circ$。则位于$(x,y)$处的方向梯度特征向量为：
+\begin{equation}
+F(x,y)_b=\left\{\begin{matrix}
+G(x,y), & if~b=B(x,y)\\
+0,      & otherwise
+\end{matrix}\right.
+\label{equ_hog_vec}
+\end{equation}
+其中，$b$为直方图任意一个通道，即$b\in\left \{ 0,...,p-1 \right \}$。$p$为总通道数。Cell中每个像素点的梯度方向落入某个通道区域，则它对应的梯度大小被加入直方图的对应块。即对Cell中所有$(x,y)$的方向梯度特征向量$F(x,y)$求和。在实际应用中，一般采用9个通道的无向直方图统计$(p=9)$，并且每一个Block包含$2\times2=4$个Cell。
+
+Block归一化及特征向量。Block中4个Cell统计得到直方图存在尺度不一致的情况，所以需要根据每个Cell各自的权重进行归一化，常用的归一化手段有：$L1-norm$，$L2-norm$，$L1-sqrt$和$L2-Hys$。由于局部光照的变化以及前景-背景对比度的变化，使得梯度强度的变化范围非常大。归一化能够进一步地对光照、阴影和边缘进行压缩。通过将各个细胞单元组合成大的、空间上连通的区间（blocks），一个block内所有cell的特征向量串联起来便得到该block的HOG特征。这些区间是互有重叠的，这就意味着：每一个单元格的特征会以不同的结果多次出现在最后的特征向量中。我们将归一化之后的块描述符（向量）就称之为HOG描述符。区间有两个主要的几何形状——矩形区间（R-HOG）和环形区间（C-HOG）。R-HOG区间大体上是一些方形的格子，它可以有三个参数来表征：每个区间中细胞单元的数目、每个细胞单元中像素点的数目、每个细胞的直方图通道数目。那么最终的特征维数计算如下：最终的HOG特征，实际上是由很多个以Block为计算单位得到的特征向量串联而成，Block以一个Cell的大小为跨度在Cell-Map上全局扫描，得到的特征向量加入末尾，如图\ref{fig_hog_vec2}所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.5\textwidth]{figure/fig_hog_vec2.eps}
+  \bicaption[HOG]{通过全局扫描得到HOG特征向量~\label{fig_hog_vec2}}{HOG vector by Global Scan}
+\end{figure}
+样本图像分割为若干个像素的单元（cell），把梯度方向平均划分为9个区间（bin），在每个单元里面对所有像素的梯度方向在各个方向区间进行直方图统计，得到一个9维的特征向量，每相邻的4个单元构成一个块（block），把一个块内的特征向量联起来得到36维的特征向量，用块对样本图像进行扫描，扫描步长为一个单元。最后将所有块的特征串联起来，就得到了人体的特征。例如，对于$64\times128$的图像而言，每$8\times8$的像素组成一个cell，每$2\times2$个cell组成一个块，因为每个cell有9个特征，所以每个块内有$4\times9=36$个特征，以8个像素为步长，那么，水平方向将有7个扫描窗口，垂直方向将有15个扫描窗口。也就是说，$64\times128$的图片，总共有$36\times7\times15=3780$个特征。
+
+（2）FHOG特征\supercite{Felzenszwalb2008A,Felzenszwalb2010Object}
+
+FHOG是原始HOG特征的一个重要变形，由美国芝加哥大学的Felzenszwalb等人提出，它被验证在目标检测任务中中某些类别的检测效果比原始HOG更好，并在目标检测，特别是行人、人脸检测当中得到广泛应用。FHOG和HOG最大的区别在于前者取消了Block的概念，对于一张输入大小为w$\times$h的图片，直接进行Cell的切分，得到一张基于Cell的图$C$，假设Cell的宽高都为$k$个像素，则$C(i,j)$满足：
+\begin{equation}
+0\leq i \leq \left\lfloor \frac{w-1}{k} \right\rfloor
+\label{equ_fhog1}
+\end{equation}
+\vspace{-3ex}
+\begin{equation}
+0\leq j \leq \left\lfloor \frac{h-1}{k} \right\rfloor
+\label{equ_fhog2}
+\end{equation}
+要将原始图像中的每个点$(x,y)$的方向梯度特征计算后相加到相应的$C(i,j)$中，具体的步骤和原始HOG梯度计算一致，其中$(i,j)$和$(x,y)$服从如下的关系：
+\begin{equation}
+i=\left\lfloor \frac{x}{k} \right\rfloor
+\label{equ_fhog3}
+\end{equation}
+\vspace{-3ex}
+\begin{equation}
+j=\left\lfloor \frac{y}{k} \right\rfloor
+\label{equ_fhog4}
+\end{equation}
+在FHOG中，每个$C(i,j)$对应四种不同的归一化因子，每个归一化因子记做$N_{\delta,\gamma}(i,j)$，且$\delta,\gamma\in\left \{ -1,1 \right \}$，则有：
+\begin{equation}
+N_{\delta,\gamma}(i,j)=\sqrt{||C(i,j)||^2+||C(i+\delta,j)||^2+||C(i,j+\gamma)||^2+||C(i+\delta,j+\gamma)||^2}
+\label{equ_fhog5}
+\end{equation}
+每一个归一化因子的含义是$C(i,j)$所对应的Block的“梯度能量”，因为一个Cell对应四个Block，所以也对应四个“梯度能量”（归一化因子），每个因子都是对包含$(i,j)$在内的4个cell组成的块block的梯度能量的度量。在FHOG中，除了Cell图$C$之外，增加了另外一个Cell图，记作图$D$。图$C$和图$D$的区别在于图$C$统计无向的直方图(Contrast Insensitive)，图$D$统计有向的直方图（Contrast Sensitive）。经过4个不同方向的归一化因子归一化之后，图$C$可以计算得到$H_1(i,j)$，它是一个$4\times9$的特征矩阵；图D可以计算得到$H_2(i,j)$，它是一个$4\times18$的特征矩阵，这里，将$H_1(i,j)$和$H_2(i,j)$进行组合得到$H(i,j)$:
+\begin{equation}
+H(i,j)=[H_1(i,j),H_2(i,j)]
+\label{equ_fhog6}
+\end{equation}
+可见，H是$4\times27$维的矩阵，令:
+\begin{equation}
+V=\left\{ u_1,...,u_9 \right \} \cup \left \{ u_10,...,u_{27} \right \}\cup \left \{ v_1,...,v_4 \right \}
+\end{equation}
+其中：
+\begin{equation}
+u_k(i,j)=\left\{\begin{matrix}
+1, & if~j=k\\
+0, & otherwise
+\end{matrix}\right.
+\label{equ_fhog7}
+\end{equation}
+\begin{equation}
+v_k(i,j)=\left\{\begin{matrix}
+1, & if~i=k\\
+0, & otherwise
+\end{matrix}\right.
+\label{equ_fhog8}
+\end{equation}
+如上述定义，$u_k$和$v_k$也都是$4\times27$维的矩阵，FHOG则为$V$中所有的元素和$H$点乘求和的结果。$V$中有31个矩阵元素，所以得到的FHOG是一个31维的特征向量。它的前27维对应不同的方向通道（9个Contrast Insensitive和18个Contrast Sensitive），剩余4个通道则是当前Cell在4个不同Block中的能量和。在PASCAL VOC数据库上实验表明，用FHOG做特征提取的算法在很多应用中效果比原始HOG特征效果更好。
+
 \subsection{非手工设计特征}
+
+上述几种特征都是人类手工设计的特征，是人类智慧的结晶。深度学习是近年来人工智能领域取得的重要突破。深度学习的本质是通过多层非线性变换从大数据中自动学习不同抽象层次的特征，从而替代手工设计。深层的结构使深度学习具有极强的表达能力和学习能力，尤其擅长提取复杂的全局特征和上下文信息，而这是浅层模型难以做到的。传统的机器学习技术在处理未加工过的数据时，体现出来的能力是有限的。几十年来，想要构建一个模式识别系统或者机器学习系统，需要一个精致的引擎和相当专业的知识来设计一个特征提取器，把原始数据（如图像的像素值）转换成一个适当的内部特征表示或特征向量，子学习系统，通常是一个分类器，对输入的样本进行检测或分类。特征表示学习是一套给机器灌入原始数据，然后能自动发现需要进行检测和分类的表达的方法。深度学习就是一种特征学习方法，把原始数据通过一些简单的但是非线性的模型转变成为更高层次的，更加抽象的表达。通过足够多的转换的组合，非常复杂的函数也可以被学习。对于分类任务，高层次的表达能够强化输入数据的区分能力方面，同时削弱不相关因素。比如，一副图像的原始格式是一个像素数组，那么在第一层上的学习特征表达通常指的是在图像的特定位置和方向上有没有边的存在。第二层通常会根据那些边的某些排放而来检测图案，这时候会忽略掉一些边上的一些小的干扰。第三层或许会把那些图案进行组合，从而使其对应于熟悉目标的某部分。随后的一些层会将这些部分再组合，从而构成待检测目标。深度学习的核心方面是，上述各层的特征都不是利用人工工程来设计的，而是使用一种通用的学习过程从数据中学到的。
+
+深度学习正在取得重大进展，解决了人工智能界的尽最大努力很多年仍没有进展的问题。它已经被证明，它能够擅长发现高维数据中的复杂结构，因此它能够被应用于科学、商业和政府等领域。除了在图像识别、语音识别等领域打破了纪录，它还在另外的领域击败了其他机器学习技术，包括预测潜在的药物分子的活性、分析粒子加速器数据、重建大脑回路、预测在非编码DNA突变对基因表达和疾病的影响。也许更令人惊讶的是，深度学习在自然语言理解的各项任务中产生了非常可喜的成果，特别是主题分类、情感分析、自动问答和语言翻译。我们认为，在不久的将来，深度学习将会取得更多的成功，因为它需要很少的手工工程，它可以很容易受益于可用计算能力和数据量的增加。目前正在为深度神经网络开发的新的学习算法和架构只会加速这一进程。
 \section{基于类Haar特征的AdaBoost人脸检测}
+\subsection{基于Adaboost学习算法}
+基于AdaBoost的学习算法有两个目的，一是从大量类Haar特征中选择出最优的一部分特征，二是将挑选出的特征用于训练有效的分类器。由于并不是每一个类Haar特征都能很好的表现人脸灰度分布特点，因此如何挑选出少量的最优的特征来组成有效的分类器成为我们要解决的主要问题。
+
+每一个分类器对应一个矩形特征，通过将一个复杂的分类器拆分成简化的弱分类器，然后将弱分类器集成层叠组合形成有效的强分类器，从而将候选图像子窗口的人脸和非人脸区分开。具体的训练步骤如下所示：
+
+\begin{itemize}
+  \item 给定样本图像$(x_1,y_1),...,(x_n,y_n)$，其中$y_i = 0,1$分别代表负样本和正样本；
+  \item 初始化权重：
+    \begin{equation}
+	w_{1,i} = \left\{
+        \begin{array}{cc}
+          \frac1{2m} & y_i = 0 \\
+          \frac1{2l} & y_i = 1
+        \end{array}
+      \right.
+    \end{equation}
+        其中$m$表示负样本的数目，$l$表示正样本的数目；
+  \item 对于$t = 1,...,T$:
+    \begin{enumerate}
+      \item 归一化权重：
+        \begin{equation}
+          w_{t,i} \leftarrow \frac{w_{t,i}}{\sum_{j=1}^n w_{t,j}}
+        \end{equation}
+            其中$w_t$是概率分布；
+      \item 对于每个特征j训练分类器$h_j$，每个分类器有且只对应一种特征，分类器错误率是
+        \begin{equation}
+          \varepsilon_j = \sum_i w_i |h_j(x_i) - y_i|
+        \end{equation}
+      \item 选择错误率$\varepsilon_t$最小的分类器$h_t$；
+      \item 更新权重：
+        \begin{equation}
+          w_{t+1,i} = w_{t,i}\beta_t^{1-e_i}
+        \end{equation}
+        其中，$\beta_t = \frac{\varepsilon_t}{1-\varepsilon_t}$如果样本$x_i$被正确分类$e_i = 0$，反之，$e_i = 1$；
+    \end{enumerate}
+  \item 最后得到强分类器为：
+    \begin{equation}
+      h(x) = \left\{
+      \begin{array}{cc}
+        1 & \sum_{t=1}^T \alpha_t h_t(x) \geq \frac{1}{2}\sum_{t=1}^T \alpha_t\\
+        0 & 其他
+      \end{array}\right.
+    \end{equation}
+        其中$\alpha_t = \lg\frac{1}{\beta_t}$
+\end{itemize}
+
+\subsection{级联分类器}
+基于AbaBoost级联分类器如图\ref{fig_AdaBoostcascade}所示。层叠的分类器每一层都是由若干弱分类器组成的强分类器，首先采用较少的特征放在前级分类器，即弱分类器较少，以排除大部分非人脸区域，能够通过几乎全部的人脸；后级分类器采用更多的特征，即强分类器由更多的弱分类器组成，检测上一层通过的子窗口，加强检测人脸的区域。随着层数的增加，弱分类器的数量也在增加，同时从上一层过滤下来的子窗口数量在减少，从而能够保证较高的检测速度。这里的待测图像，一般将其按比例缩放进行归一化，每个图像的尺寸为24*24像素的子窗口，依次判别是人脸还是非人脸。
+\begin{figure}[!h] \centering
+  \includegraphics[width=.7\textwidth]{figure/fig_AdaBoost_Cascade.eps}
+  \bicaption[基于AdaBoost级联分类器结构]{基于AdaBoost级联分类器结构~\label{AdaBoostcascade}}{Structure of AdaBoost-based cascade classifiers}
+\end{figure}
 \section{基于可变型部件模型的人脸检测}
 \section{本章小结}

@@ -6,8 +6,22 @@
     第一章测试文字
 
 \section{人脸特征点定位研究概述}
-\section{基于主动外观模型的多角度人脸特征点定位}
+人脸特征点（Face landmark）定位是在人脸检测基础上，找到具有语义的人脸特征点，如眼角、眉端、鼻尖、嘴巴轮廓等，如下图3.1所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.6\textwidth]{figure/fig_landmark_num.eps}
+  \bicaption[landmark]{人脸特征点图示 ~\label{fig_hog_face}}{Illustrations of Face Landmarks}
+\end{figure}
+该技术对人脸识别、建模、跟踪、动画制作等是极为关键的步骤。对于一幅人脸图像，通过定位特征点可以方便地抽取人脸的各部分特征，若以这些特征点为基准对抽取的各个特征值进行归一化，则这些特征值具有平移、旋转和尺度上的不变性，通过这样对人脸进行规范化处理，可以将不同大小、方向和水平旋转等情况的人脸统一起来，扩大人脸库的入库范围，提高人脸识别的速度。从某种意义上讲，面部关键特征点的定位，亦即人脸图像像素之间高层语义的对齐，是人脸识别最核心的问题之一。错误的特征定位会导致提取的人脸描述特征的严重变形，即使是不精确的对齐也会带来识别性能的快速下降。所以准确的人脸特征点定位对于后续的人脸识别有很大的影响。
+
+在早期的研究方法中，进行人脸面部特征定位的方法主要有主动形状模型（Active Shape Models, ASM）\supercite{Cootes1995Active}以及主动外观模型（Active Appearance Models, AAM）\supercite{Cootes1998Active,cootes2001active_pami}。现有的方法大致分为两类，一种是基于参数模型的方法，另外一种是基于回归的方法。参数形状模型（Parametric Shape Model）存在如下缺点，一是参数误差和对齐误差不一定对等，通过最小化参数化误差得到的结果是次优的。此外， 参数化模型通常很难具体估计模型的大小，通常是启发式的，或者使用固定数量的参数，因此在迭代对齐中不能灵活应变。基于参数模型的方法以Cootes在1995年提出的ASM方法为代表，ASM方法将多个脸部特征点的纹理和位置关系作为约束条件，计算出一个参数模型。从局部特征中检测到所求的关键点，但是这种方法对噪声敏感。AAM则易受初始化值和外观的变化的影响。在后续的工作中，研究者们虽然对ASM和AAM做出了改进，但是这些方法普遍存在泛化能力差、训练耗时严重等现象，对于真实场景下的人脸特征点定位很难取得很好的效果。另外一种流行的方法是基于局部部分可变模型的方法（Deformable Part Models，DPM）\supercite{Hossein2012Object}，该方法虽然在物体检测方面表现良好，但是对于准确度较高的人脸标记估计，其表现一般。
+
+现有方法中取得比较好的效果的是P. Dollár等人提出的级联位姿回归(Cascaded Pose Regression，CPR)\supercite{Dollar2010Cascaded}方法，这种方法在估计人脸标记当中准确率和效率都有很大提高，并成为一种主流方法，然而CPR方法仍不能很好的解决遮挡和形变过大的问题。基于此，研究者提出了一些改进的算法，如在2012年CVPR中，Cao等人受形状回归模型（Shape Regression Model, SRM）\supercite{Cao2012Face}的启发提出了Explicit Shape Regression（ESR），直接通过回归估计形状，克服高维输出等挑战，且保留了形状约束。在2013年的ICCV中，Burgos等人提出了鲁棒的级联位姿回归（Robust Cascaded Pose Regression, RCPR）\supercite{Burgosartizzu2013Robust}，专注于解决人脸特征点定位过程中的遮挡和大的变形问题。RCPR方法与ESR方法相比，RCPR当预检测失败的时，添加了一个智能重启方法。基于这些方法，本文研究并寻找一个对于遮挡和形变的鲁棒人脸特征点定位方法，能够精确、快速、鲁棒地估计出人脸特征点。
+
+
+\section{基于主动外观模型的人脸特征点定位}
 \section{基于级联回归模型的多角度人脸特征点定位}
     \subsection{形状索引特征}
+    \subsection{局部坐标系}
+    \subsection{解决形变-初始化}
     \subsection{级联回归模型}
 \section{本章小结}

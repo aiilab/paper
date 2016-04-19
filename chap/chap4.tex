@@ -6,9 +6,96 @@
     第一章测试文字
 
 \section{人脸识别研究概述}
-\section{研究背景与意义}
 \section{基于两级多任务度量学习的人脸识别}
-    \subsection{距离度量学习}
-    \subsection{多任务学习}
-    \subsection{研究背景与意义}
+\subsection{度量学习概述}
+相似或者非相似函数在机器学习，模式识别和数据挖掘领域发挥着重要的作用。比如，K近邻分类器\supercite{Cover1967Nearest}通过一个度量来确定最近邻；在聚类算法中，K-means\supercite{Lloyd1982Least}则依赖于数据点间的距离测量；在信息检索中，文档通常根据与给出查询的相关性的相似值来排序。显然，这些方法的执行都依赖于度量的品质。俗语说：“同种的鸟儿合流飞”，同样，研究者们希望通过度量学习指出样本对的相似程度。通用目的的度量如欧式距离，余弦相似或者Levenshtein距离，往往不能反映数据的特质，所以，研究者们期望设计基于特别任务的度量。然而，人工调制的度量是一个困难且枯燥的过程，因此研究者们希望找到一种方法能够自动的基于数据学到度量的方法。度量学习处理的一般过程如下图\ref{fig_metriclearning_process}所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.8\textwidth]{figure/fig_metriclearning_process.eps}
+  \bicaption[度量学习处理的一般过程]{度量学习处理的一般过程~\label{fig_metriclearning_process}}{The common process in metric learning}
+\end{figure}
+
+尽管可以追朔到更早的工作，如Friedman\supercite{friedman1994flexible}, Hastie等\supercite{Hastie1996Discriminant}，Baxter等\supercite{Baxter1998The}，度量学习正真出现在2002年，Xing等人
+\supercite{Xing2002Distance}的先驱性工作中将其视作一个凸优化问题，并逐渐成为一个研究热点。在各类顶级会议（ICML2010\footnote{\url{http://www.icml2010.org/tutorials.html}}、 ECCV2010\footnote{\url{http://www.ics.forth.gr/eccv2010/tutorials.php}}、ICCV2011workshop\footnote{\url{http://www.iccv2011.org/authors/workshops/}}、NIPS2011\footnote{\url{http://nips.cc/Conferences/2011/Program/schedule.php?Session=Workshops}} 以及ICML2013\footnote{\url{http://icml.cc/2013/?page_id=41}}）中都有针对该主题的大会报告。
+
+度量学习的目标是通过训练样本提供的信息学习到兴趣问题的度量。比如学习马氏距离（Mahalanobis）$d_M(x,{x}')=\sqrt{(x-{x}')^TM(x-{x}')}$中的半正定矩阵$M$。绝大数的度量学习方法以如下表示成对或三元组约束弱监督的方式：
+\begin{equation}
+\label{equ_ml_define}
+\left\{\begin{matrix}
+S={(x_i,x_j):x_i,x_j~similar~pair}\\
+D={(x_i,x_j):x_i,x_j~dissimilar~pair}\end{matrix}\right.
+\end{equation}
+
+相对约束（训练三元组）为：$T={(x_i,x_j,x_k)}$。其中$x_i$和$x_j$相似，与$x_k$不相似。那么一个度量学习算法的基本目标是找到一系列参数，使其最好地适应限制条件，从而最大程度地逼近底层的语义量度。通常可以写成具有以下形式的最优化问题：
+\begin{equation}
+\label{equ_ml_convex}
+\min_ML (M,S,D,T)+\lambda R(M)
+\end{equation}
+其中$L(M,S,D,T)$ 为损失函数，当限制条件被违反时，则会触发惩罚，$R(M)$为正则项，调整学习到的度量矩阵$M$，$\lambda$为正则化参数。最新提出的度量学习方法，其本质上的不同大都来自度量的选择、约束条件、损失函数和正则项。度量学习后的阶段，可用于提升与度量相关的算法的性能，如K-NN，聚类算法K-Means，排序算法等。从训练数据学习一个度量并插入一个输出预测的算法（例如，一个分类器，一个回归器，一个推荐系统等），以此希望获得比基于标准度量的预测算法更好的性能。
+
+度量学习算法可从5个关键属性来确定和描述\supercite{bellet2013survey}，如图\ref{fig_metriclearning_keypoints}所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.8\textwidth]{figure/fig_metriclearning_keypoints.eps}
+  \bicaption[度量学习算法的5个关键属性]{度量学习算法的5个关键属性~\label{fig_metriclearning_keypoints}}{Five key properties of metric learning algorithms}
+\end{figure}
+
+首先看学习模式（Learning paradigm）。度量学习主要有三种学习模式：
+
+1）全监督式（Fully supervised）：训练算法能够获取到训练实例$\left \{ z_i=(x_i,y_i)\right \}^n_{i=1} $的标签，而每个训练样本$z_i\in Z=X\times Y$是由一个实例$x_i\in X$和一个标签$y_i\in Y$(所属的类别) 组成。$Y$是一个由标签$|Y|$组成的离散有限集合。通常，标签信息被用于产生特定的对或三元限制，如前面给出的$S,D,R$。
+
+2）弱监督式（Weakly supervised）：训练算法不能获取到训练实例的标签，只能通过集合约束$S,D,R$的形式给出侧面信息。这是很有用的设置，因为在很多应用中标记的数据的代价很昂贵，而提供侧面信息却很方便。这样的例子包括用户的隐反馈（例如，点击搜索引擎结果），在网络中对文章或链接间的引用。这都可以被看作仅在对或三重约束情况下的标签信息。
+
+3）半监督式（Semi-supervised）：除了全或弱监督方式，半监督式算法能够访问未标记实例的样本（通常数据量很大）并且没有旁侧信息是可用的。当标记数据或旁侧信息很少的时候，半监督式可以避免过拟合。
+
+度量的形式（Form of metric）：显然，度量形式的选择是一个关键，一般有三大主要度量家族\supercite{bellet2013survey}：1）线性度量(Linear metrics)，如Mahalanobis距离。由于这类距离度量容易优化，计算相对简单，且不容易过拟合（因为通常可表示为凸优化问题，因此可找到全局最优）。2）非线性度量（Nonlinear metrics），比如 直方图距离，非线性度量的形式的缺点是容易引出非凸优化问题，得出的是局部最优，且可能过拟合。优点是能够捕获到数据的非线性特性。3）局部度量（Local metrics）：在局部度量中，多个（线性或者非线性的）局部度量被学习（通常是同步学习到的），从而更好的处理复杂的问题，如异构数据。然而这种形式相比于全局的方法更容易过拟合，因为所学习的参数的数量往往很多。
+
+可扩展性（Scalability）：随着可用数据的迅猛增长，可扩展性成为机器学习领域所有问题需要关注的问题。首先，期望度量学习算法对训练样本的数目具有良好的扩展性。基于此，在线学习是解决方案之一。其次，度量学习方法应对数据的维数也具有可扩展性。然而，度量学习通常表达为学习一个 矩阵的形式，设计基于如此规模的并能够合理扩展的算法依然是一个相当大的挑战。
+
+解的最优性（Optimality of the solution）：这个属性涉及到算法的能力，即找到最好满足兴趣准则的关于度量的参数的能力。理想情况下，可通过全局最优来保证。这也是凸的度量学习的关键。与此相反，非凸情况下，解可能仅是局部最优。
+
+维数降低(Dimensionality reduction)：有时候度量学习可设计为寻找一个到新的特征空间的映射。而这样的方式的一个附加好处在于可以兼顾寻找一个低维度的映射空间，从而是的计算更快，表达更紧凑。而通常情况下，维数降低是通过正则项来驱使学到的度量矩阵是低秩的。
+
+近年来，度量学习方法在人脸识别及Re-ID\supercite{Gong2013Person}等问题上得到了广泛的应用。如何为特定任务来学习适当的距离度量一直是度量学习研究的主要内容。经典的方法有基于最大间隔的多度量学习\supercite{weinberger09distance,parameswaran2010large}以及融合了多种人脸区域描述子的多度量学习算法\supercite{Cui2013Fusing}。 Fu 等人\supercite{Yun2008Correlation}提出了一种学习关联度量（correlation metric）的方法，该度量学习模型在对样本降维后，可以保留样本之间的近邻关系，并针对关联度量提出了相关嵌入分析（CEA，Correlation Embedding Analysis）模型和相关主成分分析（CPCA， Correlational Principle Component Analysis）模型。Guillaumin等人
+\supercite{Guillaumin2010Multiple}提出了MildML（Multiple Instance Logistic Discriminant Metric Learning）模型，并在多事例学习中得到了成功的应用。Guillaumin 等人\supercite{Guillaumin2009Is}还提出了LDML（Logistic Discriminant based Metric Learning）模型和MkNN（Marginalized k-nearest neighbor）模型来学习人脸识别中的距离度量。LDML 模型通过将度量学习问题看作核逻辑回归问题，通过极大似然估计来学习距离度量，MkNN 通过学习非线性度量学习模型，来提高模型的判别能力。为了改进已有度量模型的泛化能力，Nguyen 和 Bai 提出了余弦相似度度量学习（CSML）模型\supercite{nguyen2011CSML}，该模型使用余弦相似度来构造目标函数。文献\parencite{Cao2013Similarity}提出了一种Sub-SML的度量学习方法，通过采用马氏距离和余弦相似距离的学习，取得了在单任务学习中目前最高的识别率。
+
+K{\"o}stinger等人\supercite{kissme}提出了KISS 模型用来从恒等约束中学习到距离度量，此外，该模型可以针对大规模的数据集学习距离度量。Huang 等人\supercite{Huang2011Generalized}提出了广义稀疏度量学习模型（Generalized Sparse Metric Learning, GSML），该方法为许多有代表性的稀疏度量学习模型提供了一个统一的角度，并且可以将现有的许多非稀疏度量学习模型扩展到稀疏度量学习形式。Shen等人\supercite{shen2009positive}提出了推动度量（Boost Metric）方法，该方法针对传统度量学习方法中的半定规划问题不能有效地处理大规模数据的缺点，使用类似 boosting 的策略，通过将度量矩阵分解为一系列秩为1的矩阵来学习一组弱分类器，最后将它们组合。在上述方法当中，基于KISSME\supercite{kissme}的方法取得了在单任务学习下较好的效果，并且由于该方法不需要优化，只需要计算相似集和非相似集的协方差矩阵，所以运行效率相比其他方法快很多，可以处理大规模的数据的问题。以下我们详细地介绍KISSME度量学习的原理。
+
+\subsection{基于KISSME的度量学习}
+Mahalanobis距离常用于衡量两个特征向量的相似程度，对特征$\bm{x}_i,\bm{x}_j\in \mathbb{R}_d$，其相对距离可计算如下：
+\begin{equation}
+\label{equ_kissme_distance}
+d_M(x,{x}')=\sqrt{(x-{x}')^TM(x-{x}')}
+\end{equation}	  	
+其中$\bm{M}$是正定的Mahalanobis矩阵。
+
+    KISSME\supercite{kissme}是距离度量学习方法的一种，该方法通过以下函数计算两个特征是否相似，通过定义似然度来衡量输入对的相似程度：
+\begin{equation}
+\label{equ_kissme_definition}
+\delta(\mathbf{x}_i,\mathbf{x}_j)=log\left(\frac{p(\mathbf{x}_{ij}|H_0)}{p(\mathbf{x}_{ij}|H_1)}\right)
+=log\left(\frac{f(\mathbf{x}_{ij}|\theta_0)}{f(\mathbf{x}_{ij}|\theta_1)}\right)
+\end{equation}
+其中$H_0$表示$x_i,x_j$是非相似的，当$\delta(x_i,x_j)$值较大时成立，相反，$H_1$表示$x_i,x_j$是相似的，当$\delta(x_i,x_j)$值较小时成立。
+
+假设特征差$\bm{x}_ij=\bm{x}_i-\bm{x}_j$符合高斯分布，问题可转换为：
+\begin{equation}
+\label{equ_kissme_log}
+\delta(\mathbf{x}_i,\mathbf{x}_j)=\log \left ( \frac{\frac{1}{\sqrt{2|\sum_{y_{ij}=0}|}}\exp(-1/2\mathbf{x}^T_{ij}\sqrt{\sum_{y_{ij=0}}^{-1}\mathbf{x}_{ij}})}
+{\frac{1}{\sqrt{2|\sum_{y_{ij}=1}|}}\exp(-1/2\mathbf{x}^T_{ij}\sqrt{\sum_{y_{ij=1}}^{-1}\mathbf{x}_{ij}})} \right )
+\end{equation}	    	
+其中的方差矩阵通过下面公式计算：
+\begin{equation}
+\label{equ_kissme_cal1}
+\Sigma_{y_{i,j=0}}=\sum_{y_{ij=0}}(\mathbf{x}_i,\mathbf{x}_j)(\mathbf{x}_i,\mathbf{x}_j)^T
+\end{equation}	
+\begin{equation}
+\label{equ_kissme_cal2}
+\Sigma_{y_{i,j=1}}=\sum_{y_{ij=0}}(\mathbf{x}_i,\mathbf{x}_j)(\mathbf{x}_i,\mathbf{x}_j)^T
+\end{equation}		
+上式中，当$\mathbf{x}_i,\mathbf{x}_j$相似时，$y_{ij}=1$，反之$y_{ij}=0$。因此，Mahalanobis度量矩阵$M$可以使用如下公式计算：
+\begin{equation}
+\label{equ_kissme_cal2}
+M=\Sigma^{-1}_{y_{ij=1}}-\Sigma^{-1}_{y_{ij=0}}
+\end{equation}	
+从而避免了迭代优化的过程。
+
+\subsection{基于多任务度量学习的人脸辨识}
 \section{本章小结}

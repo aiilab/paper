@@ -3,11 +3,19 @@
 % Public domain.
 
 \begin{cabstract}
-	此段是摘要
+随着人脸检测与识别算法研究的深入和视频监控需求的增长，面向监控视频场景下的人脸识别技术逐渐成为一个新的研究热点。智能化是视频监控的必然趋势，基于视频监控的人脸识别技术是融合了模式识别、图像处理、计算机视觉等多学科的具有挑战性的课题。由于它提供了一种可靠、方便的身份鉴别途径，而且人脸包含了重要的生物信息，具有极高的利用价值，因此有着广泛的应用环境和广阔的应用前景。然而，在监控视频当中，场景复杂多变、光照不受控制、图像质量低，给人脸检测和识别带来了很大的挑战。对于监控环境下的人脸检测和识别问题，研究者们开展了深入的研究，本文在大量研究者工作的基础上，主要考虑监控场景下多姿态人脸的检测与识别问题。
+
+针对监控环境下人脸形变、尺度、摄像头角度等问题，本课题采用了一种基于可变型部件模型（DPM）的人脸检测方法。实验结果证明，该方法不但提高了对多人脸各个姿态的检测率，而且降低了人脸检测的误检率。并经过多线程和指令集优化后，在i5 CPU的PC上，对720p监控视频取得每秒25帧的速率。
+
+针对人脸检测后的归一化问题，需要对多姿态的人脸进行特征点检测。针对特征点问题当中的形变、遮挡及实时性的要求，本课题提出了一种基于两级级联回归的人脸特征点定位方法。该方法能够对多姿态的人脸实现精准的定位，而且保证在算法快速收敛，实现定位的实时性。
+
+针对监控环境下的人脸尺度、光照、形变复杂多变等特点，本课题提出了一种基于两级的多任务度量学习的人脸识别方法。传统的度量学习方法在应用于人脸识别时会产生过拟合、对图像噪声缺乏稳健性和训练速度慢等问题，且只针对从单一图像中一个特征学习马氏距离的度量，无法表达人脸图像的有效信息。基于此，本课题通过提取多种特征，并针对人脸辨识的问题，将一个大的学习问题分解为多个子任务，挖掘更加有区分性的信息，并在全局优化的条件下学习新的最优度量矩阵，从而提高人脸识别的准确率，并结合监控视频的特点，从而提高监控视频下人脸识别的鲁棒性。
 
 \end{cabstract}
 
 \begin{eabstract}
-	Test of the English abstract.
+With the development of face detection and recognition technology, face recognition in video surveillance scenes has become a hot research topic for the growing demand of surveillance. As intelligent video surveillance is an inevitable trend, face recognition in video surveillance scenes is a challenging task involving pattern recognition, image processing, computer vision and other subjects. Besides, it provides a reliable and convenient identity verification way and therefore has a wide range of application with broad prospects. However, the task becomes more difficult for the complex scenes, uncontrolled illumination and low resolution in video surveillance. Deep studies for face detection and face recognition in video surveillance scenes have been conducted, based on which the problem of face recognition in video surveillance is focused. In this project, we mainly consider the pose-varied face detection and recognition problems.
+
+A novel face recognition method based on multi-task metric learning is proposed in our work to solve the problems of different face scales, illuminations and complex deformations in video surveillance scenes. As over-fitting problems occurs when applying traditional metric learning methods which also train slowly and are not robust to image noises. Therefore, to learn a single metric matrix is not a favorable way for the task of face recognition in video surveillance scenes as discriminative information cannot be captured. Differently, various features are extracted and the whole task is divided into several subtasks to explore more discriminative information in our work. Then, metric matrices are learned through jointly optimization to improve the accuracy of face recognition. Additionally, super resolution method is employed considering the specificities of video surveillance scenes to improve the robustness.
 \end{eabstract}
 

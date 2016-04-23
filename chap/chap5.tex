@@ -3,19 +3,206 @@
 % Public domain.
 
 \chapter{实验结果与分析}
-    第一章测试文字
-
 \section{人脸检测结果与分析}
 \subsection{实验数据库与设置}
+\textbf{FDDB}\supercite{fddbTech}：FDDB（Face Detection Data Set and Benchmark）数据库是目前最大而且最难的公幵人脸检测数据库，它是马萨诸塞大学计算机系运营的人脸检测测试平台，所有团队可以通过其包含5171张人脸的2845张图片的测试集来测试检测技术的精度。在平台上，所有参与者都将面对学界、商界挑剔的目光，无论是百度、腾讯这样的互联网巨头，还是技术实力雄厚的技术团队，测试结果都将被公开展示，技术实力的排名被实时更新。它里面包含了各种困难的情况，包括遮挡、不同的角度、低分辨率和失焦的人脸等等。作为全世界最具权威的人脸检测评测平台之一，其公布的评测集也代表了人脸检测的世界最高水平。
+
+这个数据库包含了两种测试方案：离散的方案和连续的方案。在离散的方案中,只有当算法检测到的框和某一个标注的框的重合度大于0.5的时候，这个检测结果才算是正确的。这里的两个框的重合度的定义是两个矩形的交集的面积除以这两个矩形的并集的面积。这种离散的测试方案被广泛的应用在各种物体检测算法评价中。而连续的测试方案指的是每个算法检测到的框和标注的框的重合度会作为权重叠加到每个检测结果上。这个测试方案更加严格，它要求检测出来的框不仅要正确，而且还要稳定，要尽量和标注结果保持一致。
+
+FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片，这与监控场景下人脸检测所带来的问题一致。因为FDDB是基准数据库，所以我们在该数据库上进行了测试。其测试数据为官方指定的2845张人脸图片。下图\ref{fig_fddb}是FDDB数据库的已经人工标记的人脸图片。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.9\textwidth]{figure/fig_fddb.eps}
+  \bicaption[FDDB多姿态人脸示例]{FDDB多姿态人脸示例~\label{fig_fddb}}{Illustration of pose varied faces in FDDB }
+\end{figure}
 
 \subsection{性能评价准则}
+由于全世界研究人员的不懈努力，每年都有许多的人脸检测方法甚至是商用人脸检测系统的出现，为了便于统一管理和对这些检测方法进行测评，需要提供一个统一的测试集，并制定一套统一的指标来测试这些不同的方法。为此，世界上一些著名的大学和研究机构都做了自己的工作。人脸检测主要的评价标准有检测率、假阳率、假阴率、及算法执行效率。而检测率、假阳率、假阴率统一在ROC（Receiver Operating Characteristic）
+\supercite{Zweig1993Receiver}曲线之内，因此，本文主要以ROC曲线以及算法执行效率两个方面对人类检测性能进行评价。
+
+（1）ROC曲线
+
+在认识ROC曲线之前，需要先了解以下几个概念：
+
+1、检测率
+
+被正确检测到的人脸数与图像内包含的人脸数的比值。检测率越高，说明检测系统对人脸的接受能力越强。
+
+2．假阳率
+
+也称误检率、虚警率、误报率，即被误检为人脸的非人脸子窗口数与图像内被检所有非人脸子窗口数的比值。设图像内被检测的所有非人脸子窗口数为 ，被误检为人脸的非人脸子窗口数为 ，则假阳率为 。再设图像内被检测的所有子窗口数为 ，图像内包含的人脸数为 ，则 。检测率无法反映系统对非人脸的排除能力，有可能出现这种情况所有人脸都被检测到，但同时很多非人脸区域被误认为是人脸。因此引入假阳率来衡量系统对非人脸的排除能力。假阳率越低，说明检测系统对非人脸的排除能力越强。
+
+3．假阴率
+
+也称漏检率，即被误检为非人脸的人脸子窗口数与图像内被检测的所有人脸子窗口数的比值。设图像内被检测的所有人脸子窗口数为 ，被误检为非人脸的人脸子窗口数为 ，则假阴率为 。
+
+人脸检测本质上是一个二分类问题，基本框架是对一个滑动窗口内的图片进行分类。对一个二分问题来说，会出现四种情况。如果一个实例是正类并且也被预测成正类，即为真正类(True Positive,TP)。如果实例是负类被预测成正类，称之为假正类(False positive)。相应地，如果实例是负类被预测成负类，称之为真负类(True Positive,TP)，正类被预测成负类则为假负类(False Negative,FN)。如表\ref{table_roc}所示，1代表正类，0代表负类。其给出了评价分类器好坏的性能指标，该表也称之为即混淆矩阵。
+
+由表\ref{table_roc}可以得到总共有四个指标。其一是真正类率(True Positive Rate ，TPR)， 计算公式为$TPR=TP/ (TP + FN)$，刻画的是分类器所识别出的正实例占所有正实例的比例。另外一个是负正类率(false positive rate， FPR)，计算公式为$FPR= FP/ (FP + TN)$，计算的是分类器错认为正类的负实例占所有负实例的比例。还有一个真负类率(True Negative Rate，TNR)，计算公式为$TNR=TN/(FP + TN) = 1-FPR$。
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\centering
+\bicaption[混淆矩阵参数]{混淆矩阵参数~\label{table_roc}}{The parameters of confusion matrix}
+\label{my-label}
+\begin{tabular}{|l|l|c|l|l|}
+\toprule[1.5pt]
+\multicolumn{2}{|l|}{\multirow{2}{*}{}}                                                       & \multicolumn{2}{c|}{预测}                                                                                                                                                               &                                  \\ \cline{3-5}
+\multicolumn{2}{|l|}{}                                                                        & 人脸                                                                            & \multicolumn{1}{c|}{非人脸}                                                                              & \multicolumn{1}{c|}{\textbf{合计}} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}实  \\    际\end{tabular}} & \multicolumn{1}{c|}{人脸} & True Positive(TP)                                                             & False Negative(FN)                                                                                    & Actual  Positive(TP+FN)          \\ \cline{2-5}
+                                                                    & 非人脸                     & \multicolumn{1}{l|}{False Positive(FP)}                                       & True Negative(TN)                                                                                     & Actual Negative(FP+TN)           \\ \hline
+\multicolumn{2}{|c|}{\textbf{合计}}                                                             & \begin{tabular}[c]{@{}c@{}}Predicted Positive\\          (TP+FP)\end{tabular} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Predicted Negative\\             (FN+TN)\end{tabular}} & \multicolumn{1}{c|}{TP+FP+FN+TN} \\ \hline
+\toprule[1.5pt]
+\end{tabular}
+\end{table}
+
+在一个二分类模型中，对于所得到的连续结果，假设已确定一个阀值，比如说0.6，大于这个值的实例划归为正类，小于这个值则划到负类中。如果减小阀值，减到0.5，固然能识别出更多的正类，也就是提高了识别出的正例占所有正例的比类，即TPR，但同时也将更多的负实例当作了正实例，即提高了FPR。为了形象化这一变化，在此引入ROC，英文名为Receiver Operating Characteristic，翻译为"接受者操作特性曲线"。曲线是由两个变量的组合，1-specificity和Sensitivity. 由于1-specificity=FPR，即负正类率。Sensitivity即是真正类率，True positive rate，反映了正类覆盖程度。这个组合以1-specificity对sensitivity，即是以代价(costs)对收益(benefits)。
+
+用ROC 曲线来表示分类器的性能很直观好用。可是，人们总是希望能有一个数值来标志分类器的好坏。于是Area Under roc Curve(AUC)就出现了。顾名思义，AUC的值就是处于ROC 曲线下方的那部分面积的大小。通常，AUC的值介于0.5到1.0之间，较大的AUC代表了较好的性能。
+
+	为了更加直观的表示算法性能，一般将将各个算法曲线放在同一个图中曲线越靠近左上方，说明算法的性能越好。
+
+（2）算法执行效率
+
+大部分应用领域需要实时地检测人脸，如人脸识别、人脸跟踪，视频监控等。在检测率和误检率达到满意的前提下，检测速度越快越好。算法执行效率在理论层面有算法复杂度的分析。在实际测试过程当中，对给定配置的机型，在相同条件下，对$N$张指定大小的图片进行测试，得到总用时为$Ts$，则可得到算法检测帧率为$\frac{N}{T}fps$。
 \subsection{实验结果和分析}
+实验采用了离散的方案在FDDB上进行人脸检测算法的评估。为此，我们和最新的FDDB上最新的已经发表的结果进行比较\supercite{li2013learning,chen2014joint,yang2015convolutional,ranjan2015deep,zhang2016joint}，与学术界己发表的算法的比较结果如图\ref{fig_publised}所示，与商业系统的比较结果如图\ref{fig_unpublised}所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.9\textwidth]{figure/fig_fddb_result_1.eps}
+  \bicaption[与学术界己发表的算法的比较结果]{学术界己发表的算法的比较结果~\label{fig_publised}}{Comparison with published methods}
+\end{figure}
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.9\textwidth]{figure/fig_fddb_result_2.eps}
+  \bicaption[与商业系统的比较结果]{与商业系统的比较结果~\label{fig_unpublised}}{Comparison with published methods}
+\end{figure}
+
+图\ref{fig_publised}中与其它方法的比较结果数据有FDDB\footnote{\url{http://vis-www.cs.umass.edu/fddb/results.html}}提供，其中红色箭头为基于Haar Adaboost，而蓝色箭头表示我们的基于DPM的算法，ROC曲线越往左上角说明性能越好，可以看出，我们的算法虽然没有最新算法好，但是和基于Adaboost传统方法比较有非常大的提升。而目前开源的算法当中，基于Haar Adaboost的算法还是大多数。而我们的算法是在开源方法当中性能最好的算法。 人脸检测算法从上一结果可以看出，基于DPM的算法虽然没有达到最好的效果，但是却仅次于基于Deep Learning 的的方法。而我们基于DPM的人脸检测算法利用了比深度学习少的数据和训练时间。上述最好的算法并没有对算法的检测效率进行比较。我们知道基于Haar Adaboost 算法实时性很高，为此我们跟OpenCV自带的检测器进行了比较了算法的执行效率，其效果如表
+\ref{table_opencv}所示。
+\begin{table}[]
+\centering
+\bicaption[与OpenCV人脸检测比较]{与OpenCV人脸检测比较~\label{table_opencv}}{Comparison with OpenCV face detector}
+\label{my-label}
+\begin{tabular}{|c|c|c|}
+\toprule[1.5pt]
+\multicolumn{1}{|l|}{\textbf{~~~~~~~~指标~~~~}} & \multicolumn{1}{l|}{\textbf{~~~~~~OpenCV~~~}} & \multicolumn{1}{l|}{\textbf{~~~~~~Ours~~~}} \\ \hline
+~~~~速度~~~~                                & \textless15fps                       & 30fps                              \\ \hline
+~~~~检测率~~~~                              & 低                                   & 高                                  \\ \hline
+~~~~误检率~~~~                              & 高                                   & 低                                  \\ \hline
+~~~~指令集优化~~~~                          & ~~~~20\%提升~~~~                             & ~~~~40\%提升~~~~                             \\ \hline
+\toprule[1.5pt]
+\end{tabular}
+\end{table}
+
+我们的人脸检测器在运行时的时间和内存开销都十分的低。我们和OpenCV中的人脸检测器以及文章\parencite{zhu2012face}中的人脸检测器进行比较，我们比较不同的算法在相同情况下的时间和内存开销。对于所有的方法，我们都在分辨率为720p的图片中检测最小为$80\times80$的人脸。在一个普通的PC上、使用单线程，仅仅花了 31.5ms就能够处理完成。这个速度比文章\parencite{zhu2012face}中的人脸检测器快了1000多倍。OpenCV的人脸检测器需要 62.8ms，而且我们的算法的识别精度要远远高于OpenCV的人脸检测器。同时，在运行时的内存幵销方面，我们的人脸检测器仅仅需要20MB的内存。而在其他的方法中，例如文章\parencite{li2014efficient}中的人脸检测器需要150MB的内存，而文章\parencite{shen2013detecting}中的检测器需要866MB的内存。和这些方法相比，我们的人脸检测器更加的实用，特别是在移动设备和嵌入式设备上。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.9\textwidth]{figure/fig_opecnv_vs_dlib1.eps}
+  \bicaption[]{OpenCV与本文方法在零误检下的比较~\label{fig_opecnv_vs_dlib1}}{OpenCV detector vs. our method in zero false positive}
+\end{figure}
+
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.9\textwidth]{figure/fig_opecnv_vs_dlib2.eps}
+  \bicaption[OpenCV与本文方法在全召回下的比较]{OpenCV与本文方法在全召回下的比较~\label{fig_opecnv_vs_dlib2}}{OpenCV detector vs. our method in full recall}
+\end{figure}
+
+图\ref{fig_opecnv_vs_dlib1}和图\ref{fig_opecnv_vs_dlib2}分别展示了基于Opencv的方法和我们的方法在零误检时候和全召回情况下的结果。可以清晰的看到，在图\ref{fig_opecnv_vs_dlib1}中我们的方法和OpenCV当中的人脸检测器在没有任何误检的情况下，我们的方法并未遗漏掉任何人脸。在图\ref{fig_opecnv_vs_dlib2}中我们的方法和OpenCV自带的方法在全部检测到人脸的情况下，OpenCV误检了三个人脸，而我们的方法没有任何误检。再一次证明了我们方法的鲁棒性。这也为后续的人脸特征点检测和识别提供了有效的检测方法。
+
 \section{人脸特征点检测结果与分析}
 \subsection{实验数据库与设置}
+早期的人脸配准数据集主耍在实验场景下拍摄，而最近的人脸配准数据集往往从实际场景采集。相对实验场景的人脸配准数据库，自然场景的人脸配准数据库在姿态变化、表情、遮挡、光照强度方面提出了更大的挑战。在实验当中，我们采用真实场景下的Helen\supercite{le2012interactive} 和LFPW\supercite{belhumeur2011localizing}这两个数据库进行实验对比。
+
+\textbf{Helen}\supercite{le2012interactive}：Helen人脸数据库是2012年ECCV的文章\parencite{le2012interactive}当中提出的。它包括两个目录，分别为训练集样本和测试样本集。它包含了2330张高分辨率真实场景下的人脸图片，且每个人脸都被精细的194个人脸特征点标记。其中大部分的图片都来自Flickr。其中有2000张作为训练集，330张作为测试集。在Helen数据库当中，每个人脸的大小是550个像素，即使最小的像素也是150。所以它作为一种非常精细的人脸特征点定位基准数据库。其样例图片如图\ref{fig_helen} 所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.9\textwidth]{figure/fig_helen.eps}
+  \bicaption[Helen 数据库样例]{Helen数据库样例~\label{fig_helen}}{Example of Helen dataset}
+\end{figure}
+
+\textbf{LFPW}\supercite{belhumeur2011localizing}: 该数据库在2011年被Belhumeur等人创建，全名为：Labeled Face Parts in the Wild。数据库是从网络上获取的真实场景下的图片，其中包含了形变巨大、光照、表情、遮挡等人脸的照片。其目的是为了测试人脸配准（人脸特征点检测）在真实无限制条件下的性能。由于该数据库只提供了图片的网络地址，但是一些网络地址不是一直有效，因此，我们只从网络上获取到了包含1100张训练集当中的810张以及包含300张测试集当中的240张。该数据库的每张人脸都被三个MTurk\footnote{\url{https://www.mturk.com/mturk/welcome}}工人所标记，其中的人脸照片都被标记了29个特征点。为了获取到足够多的数据，我们按照文章\parencite{belhumeur2011localizing}的方式，将训练集增加到2000张并用得到的240张做测试集。其样例图片如图\ref{fig_lfpw} 所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.9\textwidth]{figure/fig_lfpw.eps}
+  \bicaption[LFPW 数据库样例]{LFPW数据库样例~\label{fig_lfpw}}{Example of LFPW dataset}
+\end{figure}
+
+为了分析这两个数据库的数据分布，我们对这两个数据库在表情、姿态、遮挡着三个方面进行统计，其具体情况如下表\ref{table_dataset_distribution}所示：
+\begin{table}[]
+\centering
+\bicaption[数据库数据分布]{数据库数据分布~\label{table_dataset_distribution}}{Distribution of the datasets}
+\newsavebox{\tablebox}
+\begin{lrbox}{\tablebox}
+\begin{tabular}{|c|c|c>|c|c|c|c|c|c|c|}
+\toprule[1.5pt]
+\textbf{数据集} & \multicolumn{6}{c|}{\textbf{表情}} & \multicolumn{2}{c|}{\textbf{姿态}} & \textbf{遮挡} \\ \hline
+ & 中性 & 微笑 & 惊讶 & 恶心 & 尖叫 & 斜视 & 0°-15° & 15°-30° &  \\ \hline
+\textbf{LFPW} & 48.66\% & 39.73\% & 8.05\% & 0.44\% & 1.78\% & 1.34\% & 94.69\% & 5.31\% & 18.31\% \\ \hline
+\textbf{Helen} & 43.03\% & 49.09\% & 2.12\% & 2.43\% & 0.00\% & 3.33\% & 94.54\% & 5.46\% & 13.03\% \\ \hline
+\toprule[1.5pt]
+\end{tabular}
+\end{lrbox}
+\scalebox{0.9}{\usebox{\tablebox}}  %缩放表格
+\end{table}
+
 \subsection{性能评价准则}
+通常人脸特征点的评价准则比较依赖于人脸特征点的个数。常见的m17人脸关键点定位误差评价标准采用了十七个关键点(眉毛四个，眼睛六个，鼻子三个，嘴巴四个)，而m7评价标准采用了眼角、嘴角及鼻尖的七个关键点定位。关键点定位主要有两个评价指标：与手工标定比较得化定位误差与定位效率。归一化均方误差(Normalized Mean Error，NME)常常用来衡量定位效果的主要指标，即：
+\begin{equation}
+\label{equ_NME}
+E_i=\frac{\frac{1}{M} \sum_{j=1}^{M}|p_{i,j}-g_{i,j}|_2}{|l_i-r_i|_2}
+\end{equation}
+其中，$i$表示图像标号，$j$为关键点标号，$M$是关键点的数目，$l_i$是左瞳孔中心的位置，$r_i$是心瞳孔中心的位置。$|l_i-r_i|_2$表示瞳孔距离IOD(Inter-OcularDistance)，采用欧氏距离用以归一化配准误差。$p_{i,j}$是第$i$张图片的第$j$个特征点的预测值。$g_{i,j}$是第$i$张图片的第$j$个特征点的实际值。一般在计算之前，都将人脸图片根据瞳孔中心的位置归一化到固定距离，其原理是一致的。
+
+如图\ref{fig_nme_iod}所示，因为配准误差是各向同性的，红绿蓝三个圆分别表示眼角关键点定位归一化均方误差为$0.05IOD$、$0.1IOD$以及$0.2IOD$。通常也会有对误差设限进行配准评价，通常设在
+$0.05IOD\sim0.10IOD$。在我们的方法中，我们采取了文章\parencite{dantone2012real}中所采用的方法，我们认为如果定位误差超过10\%那么就是定位失败。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.5\textwidth]{figure/fig_nme_iod.eps}
+  \bicaption[眼角定位误差示例]{眼角定位误差示例（红：0.05IOD、绿：0.1IOD、蓝：0.2IOD）~\label{fig_nme_iod}}{Illustration of localization error(Red:0.05IOD,Green:0.1IOD, Blue:0.2IOD)}
+\end{figure}
 \subsection{实验结果和分析}
+为了证明我们算法的精度和速度，我们分别在Helen和LFPW上两个数据上进行了指定标准的测试，并且对两个数据库算法执行效率进行了实验。实验的参数设置与分别与方法ESR\parencite{Cao2012Face}和方法RCPR\parencite{Burgosartizzu2013Robust}保持一致。其实验结果由表\ref{table_result_lfpw}和\ref{table_result_Helen}分别所示。
+\begin{table}[ht]
+\centering
+\bicaption[LFPW数据库测试结果]{LFPW数据库测试结果~\label{table_result_lfpw}}{Results on LFPW}
+\begin{tabular}{|c|c|c|c|}
+\toprule[1.5pt]
+\multicolumn{1}{|l|}{Method} & \multicolumn{1}{l|}{Error} & \multicolumn{1}{l|}{Failures} & \multicolumn{1}{l|}{FPS} \\ \hline
+ESR & 3.8 & 4\% & 3 \\ \hline
+RCPR & 3.5 & 2\% & 12 \\ \hline
+Human & 3.28 & 0\% & - \\ \hline
+\textbf{Ours} & \textbf{3.44} & \textbf{2\%} & \textbf{20} \\ \hline
+\toprule[1.5pt]
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\bicaption[Helen数据库测试结果]{Helen数据库测试结果~\label{table_result_Helen}}{Results on Helen}
+\begin{tabular}{|c|c|c|c|}
+\toprule[1.5pt]
+\multicolumn{1}{|l|}{Method} & \multicolumn{1}{l|}{Error} & \multicolumn{1}{l|}{Failures} & \multicolumn{1}{l|}{FPS} \\ \hline
+ESR & 7.1 & 13\% & 2 \\ \hline
+RCPR & 6.5 & 8\% & 6 \\ \hline
+Human & 3.3 & 0\% & - \\ \hline
+\textbf{Ours} & \textbf{6.7} & \textbf{9\%} & \textbf{13} \\ \hline
+\toprule[1.5pt]
+\end{tabular}
+\end{table}
+
+可以看出，我们的方法不仅保证了针对多姿态形变、表情、遮挡情况下的低错误率，而且由于我们提出的自适应初始化的策略，使得算法执行的效率很高。在Helen数据库上，我们在实验的过程当中，根据不同的迭代次数，可以得到对应的平均误差，为此我们比较了与其它方法的收敛性能，如图\ref{fig_landmark_fast}所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.6\textwidth]{figure/fig_landmark_fast.eps}
+  \bicaption[快速收敛示例]{快速收敛示例~\label{fig_landmark_fast}}{Illustration of fast convergence )}
+\end{figure}
+
+由图\ref{fig_landmark_fast}可以看出，采用了自适应的初始化策略之后，使得算法在保证定位精度的前提下有更快的收敛速度。这也再次体现了我们的算法鲁棒性。Helen数据库图像分辨率很高，并且标注的关键点非常密集，其特征定位也更加精细。但是随着定位点的增多，回归的次数也会增加，从而降低了算法的执行效率。所以在Helen数据库上的帧率远低于在LFPW上的帧率。这也指导我们在实际的工程应用当中，特征点数和速度直接有一个折中。通常我们会选择十几个特征点作为后续的处理。最后给出算法在不同数据库上的样例检测结果如图
+\ref{fig_landmark_results}所示。
+\begin{figure}[!ht] \centering
+  \includegraphics[width=.8\textwidth]{figure/fig_landmark_results.eps}
+  \bicaption[人脸特征点定位结果示例]{人脸特征点定位结果示例~\label{fig_landmark_results}}{Example result of the two dataset)}
+\end{figure}
+
 \section{人脸识别结果与分析}
 \subsection{实验数据库与设置}
+\textbf{LFW}\supercite{huang2007labeled}：
+
+\textbf{Pubfig}\supercite{attribute_classifiers}：
+
+
 \subsection{性能评价准则}
 \subsection{实验结果和分析}
 \section{本章小结}

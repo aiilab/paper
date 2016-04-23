@@ -2,141 +2,43 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.1}{\ignorespaces 美国ForensicaGPS智能监控人脸识别系统 \relax }}{8}{figure.caption.7}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces FDDB多姿态人脸示例}}{2}{figure.caption.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.1}{\ignorespaces American ForensicaGPS Facial Analysis System \relax }}{8}{figure.caption.7}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Illustration of pose varied faces in FDDB \relax }}{2}{figure.caption.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.2}{\ignorespaces 美国ISS公司SecurOS Face智能监控人脸识别系统 \relax }}{9}{figure.caption.8}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces 与学术界己发表的算法的比较结果}}{4}{figure.caption.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.2}{\ignorespaces American ISS SecurOS Face Facial Analysis System \relax }}{9}{figure.caption.8}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Comparison with published methods\relax }}{4}{figure.caption.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.3}{\ignorespaces 以色列NICE公司NiceVision智能监控系统 \relax }}{10}{figure.caption.9}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces 与商业系统的比较结果}}{5}{figure.caption.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.3}{\ignorespaces Israel NiceVision Smart Video Surveillance System \relax }}{10}{figure.caption.9}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Comparison with published methods\relax }}{5}{figure.caption.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.4}{\ignorespaces 德国Cognitec公司FaceVACS-VideoSan智能监控系统 \relax }}{10}{figure.caption.10}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces OpenCV detector vs. our method in zero false positive\relax }}{6}{figure.caption.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.4}{\ignorespaces Germany Cognitec FaceVACS-VideoSan Smart Video Surveillance System \relax }}{10}{figure.caption.10}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces OpenCV与本文方法在全召回下的比较}}{6}{figure.caption.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.5}{\ignorespaces 德国BOSCH公司IVA 4.0智能监控系统 \relax }}{11}{figure.caption.11}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces OpenCV detector vs. our method in full recall\relax }}{6}{figure.caption.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.5}{\ignorespaces Germany Cognitec FaceVACS-VideoSan Video Surveillance System \relax }}{11}{figure.caption.11}
+\contentsline {figure}{\numberline {1.6}{\ignorespaces Helen 数据库样例}}{7}{figure.caption.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.6}{\ignorespaces 印度Inttelix公司Suspect Detection智能监控系统应用实例 \relax }}{12}{figure.caption.12}
+\contentsline {figure}{\numberline {1.6}{\ignorespaces Example of Helen dataset\relax }}{7}{figure.caption.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {1.6}{\ignorespaces An Application for Indian Inttelix Suspect Detection Video Surveillance System\relax }}{12}{figure.caption.12}
+\contentsline {figure}{\numberline {1.7}{\ignorespaces LFPW 数据库样例}}{8}{figure.caption.15}
 \defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.7}{\ignorespaces Example of LFPW dataset\relax }}{8}{figure.caption.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.1}{\ignorespaces 类Haar特征}}{15}{figure.caption.13}
+\contentsline {figure}{\numberline {1.8}{\ignorespaces 眼角定位误差示例}}{9}{figure.caption.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Haar-like features\relax }}{15}{figure.caption.13}
+\contentsline {figure}{\numberline {1.8}{\ignorespaces Illustration of localization error(Red:0.05IOD,Green:0.1IOD, Blue:0.2IOD)\relax }}{9}{figure.caption.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.2}{\ignorespaces 积分图}}{16}{figure.caption.14}
+\contentsline {figure}{\numberline {1.9}{\ignorespaces 快速收敛示例}}{10}{figure.caption.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Integral image\relax }}{16}{figure.caption.14}
+\contentsline {figure}{\numberline {1.9}{\ignorespaces Illustration of fast convergence )\relax }}{10}{figure.caption.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.3}{\ignorespaces 基本LBP算子示意图}}{17}{figure.caption.15}
+\contentsline {figure}{\numberline {1.10}{\ignorespaces 人脸特征点定位结果示例}}{11}{figure.caption.21}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Illustration of basic LBP\relax }}{17}{figure.caption.15}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.4}{\ignorespaces 原始图像（左）经LBP算子处理后的图像（右）\hspace {0.25em plus 0.125em minus 0.08em}\ignorespaces \relax }}{18}{figure.caption.16}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.4}{\ignorespaces Original image (left) processed by the LBP operator (right).\relax }}{18}{figure.caption.16}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.5}{\ignorespaces 三种多尺度LBP\hspace {0.25em plus 0.125em minus 0.08em}\ignorespaces \relax }}{18}{figure.caption.17}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.5}{\ignorespaces Three type of multi-scale LBP\relax }}{18}{figure.caption.17}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.6}{\ignorespaces 等价模式与非等价模式示例\hspace {0.25em plus 0.125em minus 0.08em}\ignorespaces \relax }}{19}{figure.caption.18}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.6}{\ignorespaces Examples of uniform and nonuniform patterns\relax }}{19}{figure.caption.18}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.7}{\ignorespaces Block和Cell的关系\hspace {0.25em plus 0.125em minus 0.08em}\ignorespaces \relax }}{21}{figure.caption.19}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.7}{\ignorespaces Relationship between Block and Cell\relax }}{21}{figure.caption.19}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.8}{\ignorespaces 通过全局扫描得到HOG特征向量\hspace {0.25em plus 0.125em minus 0.08em}\ignorespaces \relax }}{22}{figure.caption.20}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.8}{\ignorespaces HOG vector by Global Scan\relax }}{22}{figure.caption.20}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.9}{\ignorespaces 基于AdaBoost级联分类器结构}}{26}{figure.caption.21}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.9}{\ignorespaces Structure of AdaBoost-based cascade classifiers\relax }}{26}{figure.caption.21}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.10}{\ignorespaces 图像金字塔示例}}{27}{figure.caption.22}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.10}{\ignorespaces Illustration of Image Pyramid \relax }}{27}{figure.caption.22}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.11}{\ignorespaces 以FHOG 特征表示的人脸图像模型 \hspace {0.25em plus 0.125em minus 0.08em}\ignorespaces \relax }}{27}{figure.caption.23}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {2.11}{\ignorespaces Face model represented by FHOG descriptor\relax }}{27}{figure.caption.23}
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.1}{\ignorespaces 人脸图像的复杂变化}}{33}{figure.caption.24}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.1}{\ignorespaces The complex variance of face image\relax }}{33}{figure.caption.24}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.2}{\ignorespaces 人脸特征点图示}}{34}{figure.caption.25}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Illustrations of Face Landmarks\relax }}{34}{figure.caption.25}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.3}{\ignorespaces AAM特征点定位框架}}{35}{figure.caption.26}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.3}{\ignorespaces AAM Framework\relax }}{35}{figure.caption.26}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.4}{\ignorespaces 人脸形状归一化示例}}{36}{figure.caption.27}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Normalization of facial features\relax }}{36}{figure.caption.27}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.5}{\ignorespaces 分段线性仿射效果图}}{38}{figure.caption.28}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Illustration of Piecewise Linear Affine \relax }}{38}{figure.caption.28}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.6}{\ignorespaces 人脸拟合技术示例}}{39}{figure.caption.29}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Illustrations of Face Fitting by AAM\relax }}{39}{figure.caption.29}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.7}{\ignorespaces 显式形状回归示例}}{42}{figure.caption.31}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Illustrations of Explicit Shape Regression\relax }}{42}{figure.caption.31}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.8}{\ignorespaces 两层级联回归模型}}{43}{figure.caption.32}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.8}{\ignorespaces Two-level Cascade Regression Model\relax }}{43}{figure.caption.32}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.9}{\ignorespaces 形状参数回归算法框架图}}{44}{figure.caption.33}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.9}{\ignorespaces Framework of shape parameter regression algorithm\relax }}{44}{figure.caption.33}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.10}{\ignorespaces 局部坐标系VS全局坐标系}}{46}{figure.caption.34}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.10}{\ignorespaces local coordinates Vs. Global coordinates}}{46}{figure.caption.34}
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.1}{\ignorespaces 人脸识别框架}}{49}{figure.caption.35}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Framework of face recognition\relax }}{49}{figure.caption.35}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.2}{\ignorespaces 度量学习处理的一般过程}}{50}{figure.caption.36}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.2}{\ignorespaces The common process in metric learning\relax }}{50}{figure.caption.36}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.3}{\ignorespaces 度量学习算法的5个关键属性}}{51}{figure.caption.37}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Five key properties of metric learning algorithms\relax }}{51}{figure.caption.37}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.4}{\ignorespaces 多任务度量学习人脸辨识框架}}{54}{figure.caption.38}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Framework of multi-task metric learning for face identification\relax }}{54}{figure.caption.38}
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.10}{\ignorespaces Example result of the two dataset)\relax }}{11}{figure.caption.21}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \contentsfinish 

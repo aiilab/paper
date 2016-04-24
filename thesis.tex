@@ -20,6 +20,7 @@
     \renewcommand\tablename{Table}}
 \captionsetup[bi-second]{english}
 \usepackage{graphicx,amsfonts,stfloats,color,multirow,booktabs,epsfig,pdfpages,bm,array}
+\usepackage{diagbox}
 \usepackage[linesnumbered,ruled]{algorithm2e}
 \setlength{\bibitemsep}{3bp}
 \renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
@@ -113,10 +114,10 @@
 	% 序言。
 	%\include{chap/introduction}
 	% 各章节。
-%	\include{chap/chap1}
-%    \include{chap/chap2}
-%    \include{chap/chap3}
-%    \include{chap/chap4}
+	\include{chap/chap1}
+    \include{chap/chap2}
+    \include{chap/chap3}
+    \include{chap/chap4}
     \include{chap/chap5}
 	\include{chap/conclusion}
 
@@ -140,13 +141,13 @@
 	% 以下为正文之后的部分，默认不进行章节编号。
 	\backmatter
 	% 致谢。
-    %\include{chap/achievements}
-	%\include{chap/acknowledge}
+    \include{chap/achievements}
+	\include{chap/acknowledge}
 
 	% 此后不排版页眉或页脚。
 	\cleardoublepage
 	\pagestyle{empty}
 	% 原创性声明和使用授权说明。
-	%\include{chap/originauth}
+	\include{chap/originauth}
 \end{document}
 

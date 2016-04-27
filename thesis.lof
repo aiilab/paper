@@ -84,7 +84,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {3.3}{\ignorespaces AAM特征点定位框架}}{37}{figure.caption.26}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.3}{\ignorespaces AAM Framework\relax }}{37}{figure.caption.26}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces AAM framework\relax }}{37}{figure.caption.26}
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {3.4}{\ignorespaces 人脸形状归一化示例}}{38}{figure.caption.27}
 \defcounter {refsection}{0}\relax 
@@ -92,19 +92,19 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {3.5}{\ignorespaces 分段线性仿射效果图}}{40}{figure.caption.28}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Illustration of Piecewise Linear Affine \relax }}{40}{figure.caption.28}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Illustration of piecewise linear affine \relax }}{40}{figure.caption.28}
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {3.6}{\ignorespaces 人脸拟合技术示例}}{41}{figure.caption.29}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Illustrations of Face Fitting by AAM\relax }}{41}{figure.caption.29}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Illustrations of face fitting by AAM\relax }}{41}{figure.caption.29}
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {3.7}{\ignorespaces 显式形状回归示例}}{44}{figure.caption.31}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Illustrations of Explicit Shape Regression\relax }}{44}{figure.caption.31}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Illustrations of explicit shape regression\relax }}{44}{figure.caption.31}
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {3.8}{\ignorespaces 两层级联回归模型}}{45}{figure.caption.32}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.8}{\ignorespaces Two-level Cascade Regression Model\relax }}{45}{figure.caption.32}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Two-level cascade regression model\relax }}{45}{figure.caption.32}
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {3.9}{\ignorespaces 形状参数回归算法框架图}}{46}{figure.caption.33}
 \defcounter {refsection}{0}\relax 
@@ -191,6 +191,8 @@
 \contentsline {figure}{\numberline {5.15}{\ignorespaces PubFig数据库TMTL人脸辨识结果}}{76}{figure.caption.61}
 \defcounter {refsection}{0}\relax 
 \contentsline {figure}{\numberline {5.15}{\ignorespaces Face identification results on the PubFig dataset}}{76}{figure.caption.61}
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 

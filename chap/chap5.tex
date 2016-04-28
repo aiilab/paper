@@ -35,7 +35,7 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 
 也称漏检率，即被误检为非人脸的人脸子窗口数与图像内被检测的所有人脸子窗口数的比值。设图像内被检测的所有人脸子窗口数为 ，被误检为非人脸的人脸子窗口数为 ，则假阴率为 。
 
-人脸检测本质上是一个二分类问题，基本框架是对一个滑动窗口内的图片进行分类。对一个二分问题来说，会出现四种情况。如果一个实例是正类并且也被预测成正类，即为真正类(True Positive,TP)。如果实例是负类被预测成正类，称之为假正类(False positive)。相应地，如果实例是负类被预测成负类，称之为真负类(True Positive,TP)，正类被预测成负类则为假负类(False Negative,FN)。如表\ref{table_roc}所示，1代表正类，0代表负类。其给出了评价分类器好坏的性能指标，该表也称之为即混淆矩阵。
+人脸检测本质上是一个二分类问题，基本框架是对一个滑动窗口内的图片进行分类。对一个二分问题来说，会出现四种情况。如果一个实例是正类并且也被预测成正类，即为真正类(True Positive,TP)。如果实例是负类被预测成正类，称之为假正类(False Positive,FP)。相应地，如果实例是负类被预测成负类，称之为真负类(True Positive,TP)，正类被预测成负类则为假负类(False Negative,FN)。如表\ref{table_roc}所示，1代表正类，0代表负类。其给出了评价分类器好坏的性能指标，该表也称之为即混淆矩阵。
 
 由表\ref{table_roc}可以得到总共有四个指标。其一是真正类率(True Positive Rate ，TPR)， 计算公式为$TPR=TP/ (TP + FN)$，刻画的是分类器所识别出的正实例占所有正实例的比例。另外一个是负正类率(false positive rate， FPR)，计算公式为$FPR= FP/ (FP + TN)$，计算的是分类器错认为正类的负实例占所有负实例的比例。还有一个真负类率(True Negative Rate，TNR)，计算公式为$TNR=TN/(FP + TN) = 1-FPR$。
 % Please add the following required packages to your document preamble:

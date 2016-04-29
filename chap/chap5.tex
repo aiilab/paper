@@ -29,13 +29,13 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 
 2．假阳率
 
-也称误检率、虚警率、误报率，即被误检为人脸的非人脸子窗口数与图像内被检所有非人脸子窗口数的比值。设图像内被检测的所有非人脸子窗口数为 ，被误检为人脸的非人脸子窗口数为 ，则假阳率为 。再设图像内被检测的所有子窗口数为 ，图像内包含的人脸数为 ，则 。检测率无法反映系统对非人脸的排除能力，有可能出现这种情况所有人脸都被检测到，但同时很多非人脸区域被误认为是人脸。因此引入假阳率来衡量系统对非人脸的排除能力。假阳率越低，说明检测系统对非人脸的排除能力越强。
+也称误检率、虚警率、误报率，定义为负类样本被错误分类为正类的样本数与所有负类样本数的比例。设图像内被检测的所有非人脸子窗口数为$M$ ，被误检为人脸的非人脸子窗口数为$N$ ，则假阳率为$N/M$ 。检测率无法反映系统对非人脸的排除能力，有可能出现这种情况所有人脸都被检测到，但同时很多非人脸区域被误认为是人脸。因此引入假阳率来衡量系统对非人脸的排除能力。假阳率越低，说明检测系统对非人脸的排除能力越强。
 
 3．假阴率
 
-也称漏检率，即被误检为非人脸的人脸子窗口数与图像内被检测的所有人脸子窗口数的比值。设图像内被检测的所有人脸子窗口数为 ，被误检为非人脸的人脸子窗口数为 ，则假阴率为 。
+也称漏检率，即被误检为非人脸的人脸子窗口数与图像内被检测的所有人脸子窗口数的比值。设图像内被检测的所有人脸子窗口数为$M$ ，被误检为非人脸的人脸子窗口数为$N$ ，则假阴率为$N/M$  。
 
-人脸检测本质上是一个二分类问题，基本框架是对一个滑动窗口内的图片进行分类。对一个二分问题来说，会出现四种情况。如果一个实例是正类并且也被预测成正类，即为真正类(True Positive,TP)。如果实例是负类被预测成正类，称之为假正类(False Positive,FP)。相应地，如果实例是负类被预测成负类，称之为真负类(True Positive,TP)，正类被预测成负类则为假负类(False Negative,FN)。如表\ref{table_roc}所示，1代表正类，0代表负类。其给出了评价分类器好坏的性能指标，该表也称之为即混淆矩阵。
+人脸检测本质上是一个二分类问题，基本框架是对一个滑动窗口内的图片进行分类。对一个二分问题来说，会出现四种情况。如果一个实例是正类并且也被预测成正类，即为真正类(True Positive,TP)。如果实例是负类被预测成正类，称之为假正类(False Positive,FP)。相应地，如果实例是负类被预测成负类，称之为真负类(True Positive,TP)，正类被预测成负类则为假负类(False Negative,FN)。如表\ref{table_roc}所示，1代表正类，0代表负类。其给出了评价分类器好坏的性能指标，即混淆矩阵。
 
 由表\ref{table_roc}可以得到总共有四个指标。其一是真正类率(True Positive Rate ，TPR)， 计算公式为$TPR=TP/ (TP + FN)$，刻画的是分类器所识别出的正实例占所有正实例的比例。另外一个是负正类率(false positive rate， FPR)，计算公式为$FPR= FP/ (FP + TN)$，计算的是分类器错认为正类的负实例占所有负实例的比例。还有一个真负类率(True Negative Rate，TNR)，计算公式为$TNR=TN/(FP + TN) = 1-FPR$。
 % Please add the following required packages to your document preamble:
@@ -151,7 +151,7 @@ E_i=\frac{\frac{1}{M} \sum_{j=1}^{M}|p_{i,j}-g_{i,j}|_2}{|l_i-r_i|_2}
 $0.05IOD\sim0.10IOD$。在我们的方法中，我们采取了文章\parencite{dantone2012real}中所采用的方法，我们认为如果定位误差超过10\%那么就是定位失败。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.5\textwidth]{figure/fig_nme_iod.eps}
-  \bicaption[眼角定位误差示例]{眼角定位误差示例（红：0.05IOD、绿：0.1IOD、蓝：0.2IOD）~\label{fig_nme_iod}}[Illustration of localization error]{Illustration of localization error(Red:0.05IOD,Green:0.1IOD, Blue:0.2IOD)}
+  \bicaption[眼角定位误差示例]{眼角定位误差示例（红：0.05IOD、绿：0.1IOD、 蓝：0.2IOD）~\label{fig_nme_iod}}[Illustration of localization error]{Illustration of localization error(Red:0.05IOD,Green:0.1IOD, Blue:0.2IOD)}
 \end{figure}
 \subsection{实验结果和分析}
 为了证明我们算法的精度和速度，我们分别在Helen和LFPW上两个数据上进行了指定标准的测试，并且对两个数据库算法执行效率进行了实验。实验的参数设置与分别与方法ESR\parencite{Cao2012Face}和方法RCPR\parencite{Burgosartizzu2013Robust}保持一致。其实验结果由表\ref{table_result_lfpw}和\ref{table_result_Helen}分别所示。
@@ -237,7 +237,7 @@ Precision=TP/(TP+FP)
 首先，我们根据人脸特征点检测之后的9个特征点（嘴角2个，眼睛三个，鼻子1个）在三个尺度上提取SIFT\supercite{Lowe2004Distinctive}特征。相应的特征维数是3456维。为了便于计算，我们利用PCA将特征维度降至100维的子空间。为了保证公平性，也验证了未降维的2456维特征，可以发现PCA降维对其影响较小。只有通过线性的SVM方法去分类受部分影响。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.8\textwidth]{figure/fig_lfw_kissme_roc.eps}
-  \bicaption[LFW数据库KISSME人脸确认结果]{LFW数据库KISSME人脸确认结果.(a)相似对和不相似对示例 (b)不同方法对应的ROC曲线~\label{fig_lfw_kissme_roc}}[Face verification results on the LFW dataset]{Face verification results on the LFW dataset.(a) Examples of similar and dissimilar pairs. (b) ROC curves for different method.}
+  \bicaption[LFW数据库KISSME人脸确认结果]{LFW数据库KISSME人脸确认结果.(a) 相似对和不相似对示例 (b)不同方法对应的ROC曲线~\label{fig_lfw_kissme_roc}}[Face verification results on the LFW dataset]{Face verification results on the LFW dataset.(a) Examples of similar and dissimilar pairs. (b) ROC curves for different method.}
 \end{figure}
 在图\ref{fig_lfw_kissme_roc}当中，我们与常用的度量学习方法进行了比较，如LDML\supercite{Guillaumin}，ITML\supercite{itml}，LMNN\supercite{weinberger09distance}，SVM\supercite{Chang2011LIBSVM}以及马氏距离、欧式距离作为基准进行比较。可以发现，本方法取得比其它度量学习方法性能稍微提升。
 

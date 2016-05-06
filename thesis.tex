@@ -7,7 +7,7 @@
 % Date: 2016-03-29
 
 \documentclass[GBK, nocolorlinks]{pkuthss}
-\usepackage[backend = biber, firstinits=false, style=caspervector, gbk, sorting =none]{biblatex} %文文献在前，中文文献在后排序，请设置“sorting = ecnty”；反之请设置“sorting = centy”。
+\usepackage[backend = biber, firstinits=false, style=caspervector, gbk, sorting =none, maxnames=999]{biblatex} %文文献在前，中文文献在后排序，请设置“sorting = ecnty”；反之请设置“sorting = centy”。
 \usepackage{titletoc}
 \usepackage{tocloft}
 \usepackage[defaultsups]{newtxtext}
@@ -16,9 +16,12 @@
 \usepackage{indentfirst} %首段缩进
 \usepackage{bicaption} % 双语标题
 \DeclareCaptionOption{english}[]{%
-    \renewcommand\figurename{Figure}%
+    \renewcommand\figurename{Fig}%
     \renewcommand\tablename{Table}}
 \captionsetup[bi-second]{english}
+\makeatletter
+\DeclareFieldFormat*{year}{#1}
+\makeatother
 \usepackage{graphicx,amsfonts,stfloats,color,multirow,booktabs,epsfig,pdfpages,bm,array}
 \usepackage{diagbox}
 \usepackage[linesnumbered,ruled]{algorithm2e}
@@ -34,7 +37,7 @@
 	eauthor = {Xuewu Zhang},
 	studentid = {1301213743},
 	date = {二〇一六年六月},
-	school = {信息工程学院},
+	school = {深圳研究生院},
 	cmajor = {计算机应用技术}, emajor = {Computer Applied Technology},
 	direction = {人机交互与机器人系统},
 	cmentor = {刘宏\ 教授}, ementor = {Prof.\ Hong Liu},

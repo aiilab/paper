@@ -15,8 +15,7 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 \end{figure}
 
 \subsection{性能评价准则}
-由于全世界研究人员的不懈努力，每年都有许多的人脸检测方法甚至是商用人脸检测系统的出现，为了便于统一管理和对这些检测方法进行测评，需要提供一个统一的测试集，并制定一套统一的指标来测试这些不同的方法。为此，世界上一些著名的大学和研究机构都做了自己的工作。人脸检测主要的评价标准有检测率、假阳率、假阴率、及算法执行效率。而检测率、假阳率、假阴率统一在ROC（Receiver Operating Characteristic）
-\supercite{Zweig1993Receiver}曲线之内，因此，本文主要以ROC曲线以及算法执行效率两个方面对人类检测性能进行评价。
+由于全世界研究人员的不懈努力，每年都有许多的人脸检测方法甚至是商用人脸检测系统的出现，为了便于统一管理和对这些检测方法进行测评，需要提供一个统一的测试集，并制定一套统一的指标来测试这些不同的方法。为此，世界上一些著名的大学和研究机构都做了自己的工作。人脸检测主要的评价标准有检测率、假阳率、假阴率、及算法执行效率。而检测率、假阳率、假阴率统一在接收者操作特性（Receiver Operating Characteristic,ROC）曲线\supercite{Zweig1993Receiver}之内，简称“ROC曲线”。因此，本文主要以ROC曲线以及算法执行效率两个方面对人类检测性能进行评价。
 
 （1）ROC曲线
 
@@ -34,9 +33,10 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 
 也称漏检率，即被误检为非人脸的人脸子窗口数与图像内被检测的所有人脸子窗口数的比值。设图像内被检测的所有人脸子窗口数为$M$ ，被误检为非人脸的人脸子窗口数为$N$ ，则假阴率为$N/M$  。
 
-人脸检测本质上是一个二分类问题，基本框架是对一个滑动窗口内的图片进行分类。对一个二分问题来说，会出现四种情况。如果一个实例是正类并且也被预测成正类，即为真正类(True Positive,TP)。如果实例是负类被预测成正类，称之为假正类(False Positive,FP)。相应地，如果实例是负类被预测成负类，称之为真负类(True Positive,TP)，正类被预测成负类则为假负类(False Negative,FN)。如表\ref{table_roc}所示，1代表正类，0代表负类。其给出了评价分类器好坏的性能指标，即混淆矩阵。
+人脸检测本质上是一个二分类问题，基本框架是对一个滑动窗口内的图片进行分类。对一个二分问题来说，会出现四种情况。如果一个实例是正类并且也被预测成正类，即为真正类(True Positive,\~TP)。如果实例是负类被预测成正类，称之为假正类(False Positive,FP)。相应地，如果实例是负类被预测成负类，称之为真负类(True Positive,\~TP)，正类被预测成负类则为假负类(False Negative,\~FN)。如表
+\ref{table_roc}所示，1代表正类，0代表负类。其给出了评价分类器好坏的性能指标，即混淆矩阵。
 
-由表\ref{table_roc}可以得到总共有四个指标。其一是真正类率(True Positive Rate ，TPR)， 计算公式为$TPR=TP/ (TP + FN)$，刻画的是分类器所识别出的正实例占所有正实例的比例。另外一个是负正类率(false positive rate， FPR)，计算公式为$FPR= FP/ (FP + TN)$，计算的是分类器错认为正类的负实例占所有负实例的比例。还有一个真负类率(True Negative Rate，TNR)，计算公式为$TNR=TN/(FP + TN) = 1-FPR$。
+由表\ref{table_roc}可以得到总共有四个指标。其一是真正类率(True Positive Rate,\~TPR)， 计算公式为$TPR=TP/ (TP + FN)$，刻画的是分类器所识别出的正实例占所有正实例的比例。另外一个是负正类率(False Positive Rate,\~FPR)，计算公式为$FPR= FP/ (FP + TN)$，计算的是分类器错认为正类的负实例占所有负实例的比例。还有一个真负类率(True Negative Rate,\~TNR)，计算公式为$TNR=TN/(FP + TN) = 1-FPR$。
 % Please add the following required packages to your document preamble:
 % \usepackage{multirow}
 \begin{table}[]
@@ -56,7 +56,7 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 
 在一个二分类模型中，对于所得到的连续结果，假设已确定一个阀值，比如说0.6，大于这个值的实例划归为正类，小于这个值则划到负类中。如果减小阀值，减到0.5，固然能识别出更多的正类，也就是提高了识别出的正例占所有正例的比类，即TPR，但同时也将更多的负实例当作了正实例，即提高了FPR。为了形象化这一变化，在此引入ROC，英文名为Receiver Operating Characteristic，翻译为"接受者操作特性曲线"。曲线是由两个变量的组合，1-Specificity和Sensitivity. 由于1-Specificity=FPR，即负正类率。Sensitivity即是真正类率，True Positive Rate (TPR)，反映了正类覆盖程度。这个组合以1-Specificity对Sensitivity，即是以代价(costs)对收益(benefits)。
 
-用ROC 曲线来表示分类器的性能很直观好用。可是，人们总是希望能有一个数值来标志分类器的好坏。于是Area Under roc Curve(AUC)就出现了。顾名思义，AUC的值就是处于ROC 曲线下方的那部分面积的大小。通常，AUC的值介于0.5到1.0之间，较大的AUC代表了较好的性能。
+用ROC曲线来表示分类器的性能很直观好用。可是，人们总是希望能有一个数值来标志分类器的好坏。于是Area Under roc Curve(AUC)就出现了。顾名思义，AUC的值就是处于ROC 曲线下方的那部分面积的大小。通常，AUC的值介于0.5到1.0之间，较大的AUC代表了较好的性能。
 
 	为了更加直观的表示算法性能，一般将各个算法曲线放在同一个图中曲线越靠近左上方，说明算法的性能越好。
 
@@ -92,7 +92,7 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 \end{tabular}
 \end{table}
 
-我们的人脸检测器在运行时的时间和内存开销都十分的低。我们和OpenCV中的人脸检测器以及文章\parencite{zhu2012face}中的人脸检测器进行比较，我们比较不同的算法在相同情况下的时间和内存开销。对于所有的方法，我们都在分辨率为720p的图片中检测最小为$80\times80$的人脸。在一个普通的PC上、使用单线程，仅仅花了 31.5ms就能够处理完成。这个速度比文章\parencite{zhu2012face}中的人脸检测器快了1000多倍。OpenCV的人脸检测器需要 62.8ms，而且我们的算法的识别精度要远远高于OpenCV的人脸检测器。同时，在运行时的内存幵销方面，我们的人脸检测器仅仅需要20MB的内存。而在其他的方法中，例如文献\parencite{li2014efficient}中的人脸检测器需要150MB的内存，而文献\parencite{shen2013detecting}中的检测器需要866MB的内存。和这些方法相比，我们的人脸检测器更加的实用，特别是在移动设备和嵌入式设备上。
+我们的人脸检测器在运行时的时间和内存开销都十分的低。我们和OpenCV中的人脸检测器以及文献\parencite{zhu2012face}中的人脸检测器进行比较，我们比较不同的算法在相同情况下的时间和内存开销。对于所有的方法，我们都在分辨率为720p的图片中检测最小为$80\times80$的人脸。在一个普通的PC上、使用单线程，仅仅花了 31.5ms就能够处理完成。这个速度比文献\parencite{zhu2012face}中的人脸检测器快了1000多倍。OpenCV的人脸检测器需要 62.8ms，而且我们的算法的识别精度要远远高于OpenCV的人脸检测器。同时，在运行时的内存幵销方面，我们的人脸检测器仅仅需要20MB的内存。而在其他的方法中，例如文献\parencite{li2014efficient}中的人脸检测器需要150MB的内存，而文献\parencite{shen2013detecting}中的检测器需要866MB的内存。和这些方法相比，我们的人脸检测器更加的实用，特别是在移动设备和嵌入式设备上。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.9\textwidth]{figure/fig_opecnv_vs_dlib1.eps}
   \bicaption[]{OpenCV与本文方法在零误检下的比较~\label{fig_opecnv_vs_dlib1}}{OpenCV detector vs. our method in zero false positive}
@@ -109,7 +109,7 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 \subsection{实验数据库与设置}
 早期的人脸配准数据集主耍在实验场景下拍摄，而最近的人脸配准数据集往往从实际场景采集。相对实验场景的人脸配准数据库，自然场景的人脸配准数据库在姿态变化、表情、遮挡、光照强度方面提出了更大的挑战。在实验当中，我们采用真实场景下的Helen\supercite{le2012interactive} 和LFPW\supercite{belhumeur2011localizing}这两个数据库进行实验对比。
 
-\textbf{Helen}\supercite{le2012interactive}：Helen人脸数据库是2012年ECCV的文章\parencite{le2012interactive}当中提出的。它包括两个目录，分别为训练集样本和测试样本集。它包含了2330张高分辨率真实场景下的人脸图片，且每个人脸都被精细的194个人脸特征点标记。其中大部分的图片都来自Flickr。其中有2000张作为训练集，330张作为测试集。在Helen数据库当中，每个人脸的大小是550个像素，即使最小的像素也是150。所以它作为一种非常精细的人脸特征点定位基准数据库。其样例图片如图\ref{fig_helen} 所示。
+\textbf{Helen}\supercite{le2012interactive}：Helen人脸数据库是2012年ECCV的论文\parencite{le2012interactive}当中提出的。它包括两个目录，分别为训练集样本和测试样本集。它包含了2330张高分辨率真实场景下的人脸图片，且每个人脸都被精细的194个人脸特征点标记。其中大部分的图片都来自Flickr。其中有2000张作为训练集，330张作为测试集。在Helen数据库当中，每个人脸的大小是550个像素，即使最小的像素也是150。所以它作为一种非常精细的人脸特征点定位基准数据库。其样例图片如图\ref{fig_helen} 所示。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.9\textwidth]{figure/fig_helen.eps}
   \bicaption[Helen 数据库样例]{Helen数据库样例~\label{fig_helen}}{Example of Helen dataset}
@@ -118,7 +118,7 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 \textbf{LFPW}\supercite{belhumeur2011localizing}: 该数据库在2011年被Belhumeur等人创建，全名为：Labeled Face Parts in the Wild。数据库是从网络上获取的真实场景下的图片，其中包含了形变巨大、光照、表情、遮挡等人脸的照片。其目的是为了测试人脸配准（人脸特征点检测）在真实无限制条件下的性能。由于该数据库只提供了图片的网络地址，但是一些网络地址不是一直有效，因此，我们只从网络上获取到了包含1100张训练集当中的810张以及包含300张测试集当中的240张。该数据库的每张人脸都被三个MTurk\footnote{\url{https://www.mturk.com/mturk/welcome}}工人所标记，其中的人脸照片都被标记了29个特征点。为了获取到足够多的数据，我们按照文章\parencite{belhumeur2011localizing}的方式，将训练集增加到2000张并用得到的240张做测试集。其样例图片如图\ref{fig_lfpw} 所示。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.9\textwidth]{figure/fig_lfpw.eps}
-  \bicaption[LFPW 数据库样例]{LFPW数据库样例~\label{fig_lfpw}}{Example of LFPW dataset}
+  \bicaption[LFPW 数据库样例]{LFPW数据库样例~\label{fig_lfpw}}{Examples of LFPW dataset}
 \end{figure}
 
 为了分析这两个数据库的数据分布，我们对这两个数据库在表情、姿态、遮挡着三个方面进行统计，其具体情况如下表\ref{table_dataset_distribution}所示：
@@ -145,10 +145,10 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 \label{equ_NME}
 E_i=\frac{\frac{1}{M} \sum_{j=1}^{M}|p_{i,j}-g_{i,j}|_2}{|l_i-r_i|_2}
 \end{equation}
-其中，$i$表示图像标号，$j$为关键点标号，$M$是关键点的数目，$l_i$是左瞳孔中心的位置，$r_i$是心瞳孔中心的位置。$|l_i-r_i|_2$表示瞳孔距离IOD(Inter-OcularDistance)，采用欧氏距离用以归一化配准误差。$p_{i,j}$是第$i$张图片的第$j$个特征点的预测值。$g_{i,j}$是第$i$张图片的第$j$个特征点的实际值。一般在计算之前，都将人脸图片根据瞳孔中心的位置归一化到固定距离，其原理是一致的。
+其中，$i$表示图像标号，$j$为关键点标号，$M$是关键点的数目，$l_i$是左瞳孔中心的位置，$r_i$是心瞳孔中心的位置。$|l_i-r_i|_2$表示瞳孔距离IOD(Inter-Ocular Distance,\~IOD)，采用欧氏距离用以归一化配准误差。$p_{i,j}$是第$i$张图片的第$j$个特征点的预测值。$g_{i,j}$是第$i$张图片的第$j$个特征点的实际值。一般在计算之前，都将人脸图片根据瞳孔中心的位置归一化到固定距离，其原理是一致的。
 
 如图\ref{fig_nme_iod}所示，因为配准误差是各向同性的，红绿蓝三个圆分别表示眼角关键点定位归一化均方误差为$0.05IOD$、$0.1IOD$以及$0.2IOD$。通常也会有对误差设限进行配准评价，通常设在
-$0.05IOD\sim0.10IOD$。在我们的方法中，我们采取了文章\parencite{dantone2012real}中所采用的方法，我们认为如果定位误差超过10\%那么就是定位失败。
+$0.05IOD\sim0.10IOD$。在我们的方法中，我们采取了文献\parencite{dantone2012real}中所采用的方法，我们认为如果定位误差超过10\%那么就是定位失败。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.5\textwidth]{figure/fig_nme_iod.eps}
   \bicaption[眼角定位误差示例]{眼角定位误差示例（红：0.05IOD、绿：0.1IOD、 蓝：0.2IOD）~\label{fig_nme_iod}}[Illustration of localization error]{Illustration of localization error(Red:0.05IOD,Green:0.1IOD, Blue:0.2IOD)}
@@ -186,7 +186,7 @@ Human & 3.3 & 0\% & - \\
 可以看出，我们的方法不仅保证了针对多姿态形变、表情、遮挡情况下的低错误率，而且由于我们提出的自适应初始化的策略，使得算法执行的效率很高。在Helen数据库上，我们在实验的过程当中，根据不同的迭代次数，可以得到对应的平均误差，为此我们比较了与其它方法的收敛性能，如图\ref{fig_landmark_fast}所示。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.6\textwidth]{figure/fig_landmark_fast.eps}
-  \bicaption[快速收敛示例]{快速收敛示例~\label{fig_landmark_fast}}{Illustration of fast convergence )}
+  \bicaption[快速收敛示例]{快速收敛示例~\label{fig_landmark_fast}}{Illustration of fast convergence}
 \end{figure}
 
 由图\ref{fig_landmark_fast}可以看出，采用了自适应的初始化策略之后，使得算法在保证定位精度的前提下有更快的收敛速度。这也再次体现了我们的算法鲁棒性。Helen数据库图像分辨率很高，并且标注的关键点非常密集，其特征定位也更加精细。但是随着定位点的增多，回归的次数也会增加，从而降低了算法的执行效率。所以在Helen数据库上的帧率远低于在LFPW上的帧率。这也指导我们在实际的工程应用当中，特征点数和速度直接有一个折中。通常我们会选择十几个特征点作为后续的处理。最后给出算法在不同数据库上的样例检测结果如图\ref{fig_landmark_results}所示。

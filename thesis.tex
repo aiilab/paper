@@ -97,17 +97,17 @@
 	\tableofcontents
 
     % 插图目录、表格目录
-    \makeatletter
-    \renewcommand*\l@figure{\@dottedtocline{2}{0em}{3.2em}}
-    \renewcommand*\l@table{\@dottedtocline{2}{0em}{3.2em}}
-    \def\@dotsep{0.1}
-    \makeatother
-    \renewcommand\listfigurename{图目录} % 对List of Figures进行汉化为插图目录
-    \renewcommand{\numberline}[1]{图~#1\hspace*{1em}}%设置图目录编号样式，主要是间距
-    \listoffigures%自动生成图目录
-    \renewcommand\listtablename{表目录}  % 对List of Tables进行汉化表格目录
-    \renewcommand{\numberline}[1]{表~#1\hspace*{1em}}%设置表目录编号样式，主要是间距
-    \listoftables%自动生成表目录
+   % \makeatletter
+%    \renewcommand*\l@figure{\@dottedtocline{2}{0em}{3.2em}}
+%    \renewcommand*\l@table{\@dottedtocline{2}{0em}{3.2em}}
+%    \def\@dotsep{0.1}
+%    \makeatother
+%    \renewcommand\listfigurename{图目录} % 对List of Figures进行汉化为插图目录
+%    \renewcommand{\numberline}[1]{图~#1\hspace*{1em}}%设置图目录编号样式，主要是间距
+%    \listoffigures%自动生成图目录
+%    \renewcommand\listtablename{表目录}  % 对List of Tables进行汉化表格目录
+%    \renewcommand{\numberline}[1]{表~#1\hspace*{1em}}%设置表目录编号样式，主要是间距
+%    \listoftables%自动生成表目录
 	% 以下为正文部分，默认要进行章节编号。
 	\mainmatter
 	% 序言。

@@ -10,12 +10,12 @@
 \end{figure}
 
 从图\ref{fig_face_variation}中的人脸图像示例中可以看到要让计算机自动完成这项任务，研究人员面临巨大的挑战。因而，研究者必须设计各种算法和模型，并参照人类对这些模式的认知来指导计算机对人脸图像进行分析，从而完成特征点的定位和人脸形状的提取。
-
-人脸特征点（Face landmark）定位是在人脸检测基础上，找到具有语义的人脸特征点，如眼角、眉端、鼻尖、嘴巴轮廓等，如图\ref{fig_landmark_num}所示。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.6\textwidth]{figure/fig_landmark_num.eps}
   \bicaption[人脸特征点图示]{人脸特征点图示 ~\label{fig_landmark_num}}{Illustrations of Face Landmarks}
 \end{figure}
+
+人脸特征点（Face landmark）定位是在人脸检测基础上，找到具有语义的人脸特征点，如眼角、眉端、鼻尖、嘴巴轮廓等，如图\ref{fig_landmark_num}所示。
 
 人脸特征点对人脸识别、建模、跟踪、动画制作等是极为关键的步骤。对于一幅人脸图像，通过定位特征点可以方便地抽取人脸的各部分特征，若以这些特征点为基准对抽取的各个特征值进行归一化，则这些特征值具有平移、旋转和尺度上的不变性，通过这样对人脸进行规范化处理，可以将不同大小、方向和水平旋转等情况的人脸统一起来，扩大人脸库的入库范围，提高人脸识别的速度。从某种意义上讲，面部关键特征点的定位，亦即人脸图像像素之间高层语义的对齐，是人脸识别最核心的问题之一。错误的特征定位会导致提取的人脸描述特征的严重变形，不精确的对齐也会带来识别性能的快速下降，所以准确的人脸特征点定位对于后续的人脸识别有很大的影响。
 
@@ -159,7 +159,7 @@ R^t=\text{arg }\underset{R}{min}\sum_{i=1}^{N}\left \| \hat{S}_i-(S^{t-1}_i+R(I_
   \bicaption[两层级联回归模型]{两层的级联回归 ~\label{fig_two_cascaded}}{Two-level cascade regression model}
 \end{figure}
 
-算法采用两级形状回归方法计算形状回归量$R^t$。一级回归产生特征，并更新形状。二级回归是进行特征选择，并计算形状增量。二级回归是由若干个弱回归量$R^1,R^2,\cdots,R^T$组成，经过一级回归和二级回归的交叉迭代后产生一系列强回归量。一级回归中，采用形状特征索引方法获取特征，这种方式能准确定位特征位置，提取有效人脸特征。二级回归特征选择中，采用相关性特征选择方法，从特征池中选择与本次迭代相关性最大的几个特征作为本次迭代的人脸特征。这种方法能选择具有代表性的人脸特征，学习到较好的形状回归量。通过二级形状回归迭代后，输出对齐的人脸形状，该形状是由初始人脸形状和训练样本形状线性和表示，即：
+算法采用两级形状回归方法计算形状回归量$R^t$。在第一级回归当中，主要用于产生特征，并更新形状。在第二级回归中，主要进行特征选择，并计算形状增量。二级回归是由若干个弱回归量$R^1,R^2,\cdots,R^T$组成，经过一级回归和二级回归的交叉迭代后产生一系列强回归量。一级回归中，采用形状特征索引方法获取特征，这种方式能准确定位特征位置，提取有效人脸特征。二级回归特征选择中，采用相关性特征选择方法，从特征池中选择与本次迭代相关性最大的几个特征作为本次迭代的人脸特征。这种方法能选择具有代表性的人脸特征，学习到较好的形状回归量。通过二级形状回归迭代后，输出对齐的人脸形状，该形状是由初始人脸形状和训练样本形状线性和表示，即：
 \begin{equation}
 \label{equ_esr_two_level}
 S=S^0+\sum_{i=1}^{N}\omega_i\hat{S_i}
@@ -256,7 +256,7 @@ y\\
 得到相似变换之后的人脸图像和基准点之后，就可以以相似变换后的各个基准点为中心，建立局部坐标系来提取特征。对于基于区域统计的特征，例如LBP\supercite{Ojala2002Gray,Zhenhua2010A}、SIFT\supercite{Lowe2004Distinctive}、LE\supercite{Li2013Probabilistic}等，以各个基准点为中心，在其周围先截取一个矩形区域。然后再将这个矩形区域均匀的划分成多个小的矩形区域。接着在每个小的矩形区域里提取这些特征。最后将所有小矩形区域里的特征拼接起来即可。对于像素灰度值特征，取两个像素点的灰度差异作为特征。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.7\textwidth]{figure/fig_cordidate.eps}
-  \bicaption[局部坐标系VS全局坐标系]{(a).局部坐标系的像素索引具有相同的语义，(b).全局坐标系下同位置的像素具有不同语义 ~\label{fig_cordidate}}[local coordinates Vs. Global coordinates]{(a).Pixels indexed by the same local coordinates have the same semantic meaning , (b). pixels indexed by the same global coordinates have different semantic meanings due to the face shape variation}
+  \bicaption[局部坐标系VS全局坐标系]{(a).~局部坐标系的像素索引具有相同的语义~(b).~全局坐标系下同位置的像素具有不同语义 ~\label{fig_cordidate}}[local coordinates Vs. Global coordinates]{(a).~Pixels indexed by the same local coordinates have the same semantic meaning~(b).~pixels indexed by the same global coordinates have different semantic meanings due to the face shape variation}
 \end{figure}
 
 以各个基准点为原点，以水平方向为$x$轴，竖直方向为$y$轴建立局部坐标系，每个像素提取点都是相对于其中某个局部的坐标系而言的。在实际中，一般用两个像素点的差作为特征，以获得更好的光照不变性。我们称这种以各个基准点为原点提取特征的方式叫局部坐标系特征，它是相对于以图像左上角为原点提取特征的这种全局坐标系特征而言的。这特征计算量极低，并且足够用来提供训练数据。全局坐标系不能适用于非刚性的人脸形状，因大部分有用的特征都是分布在突出的部位四周，比方说眼睛、鼻子和嘴巴，而且标记点的位置在人脸不同表情、不同姿态的时候变化很大。而使用局部坐标索引像素，以最近的标记点作为参考。这样索引可以保持不变性，特征拥有很强的鲁棒性。

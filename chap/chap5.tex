@@ -9,7 +9,7 @@
 这个数据库包含了两种测试方案：离散的方案和连续的方案。在离散的方案中，只有当算法检测到的框和某一个标注的框的重合度大于0.5的时候，这个检测结果才算是正确的。这里的两个框的重合度的定义是两个矩形的交集的面积除以这两个矩形的并集的面积。这种离散的测试方案被广泛的应用在各种物体检测算法评价中。而连续的测试方案指的是每个算法检测到的框和标注的框的重合度会作为权重叠加到每个检测结果上。这个测试方案更加严格，它要求检测出来的框不仅要正确，而且还要稳定，要尽量和标注结果保持一致。
 
 FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片，这与监控场景下人脸检测所带来的问题一致。因为FDDB是基准数据库，所以我们在该数据库上进行了测试。其测试数据为官方指定的2845张人脸图片。图\ref{fig_fddb}是FDDB数据库的已经人工标记的人脸图片。
-\begin{figure}[!ht] \centering
+\begin{figure}[ht] \centering
   \includegraphics[width=.9\textwidth]{figure/fig_fddb.eps}
   \bicaption[FDDB多姿态人脸示例]{FDDB多姿态人脸示例~\label{fig_fddb}}{Illustration of pose varied faces in FDDB }
 \end{figure}
@@ -121,7 +121,7 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
   \bicaption[LFPW 数据库样例]{LFPW数据库样例~\label{fig_lfpw}}{Examples of LFPW dataset}
 \end{figure}
 
-为了分析这两个数据库的数据分布，我们对这两个数据库在表情、姿态、遮挡这三个方面进行统计，其具体情况如表\ref{table_dataset_distribution}所示：
+为了分析这两个数据库的数据分布，我们对这两个数据库在表情、姿态、遮挡这三个方面进行统计，其具体情况如表\ref{table_dataset_distribution}所示。
 \begin{table}[]
 \centering
 \bicaption[数据库数据分布]{数据库数据分布~\label{table_dataset_distribution}}{Distribution of the datasets}

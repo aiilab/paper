@@ -19,9 +19,18 @@
     \renewcommand\figurename{Fig}%
     \renewcommand\tablename{Table}}
 \captionsetup[bi-second]{english}
-\makeatletter
-\DeclareFieldFormat*{year}{#1}
-\makeatother
+%\makeatletter
+%\DeclareFieldFormat*{year}{#1}
+%\makeatother
+ % 参考文献格式修改
+    \makeatletter
+    \DeclareFieldFormat*{year}{#1}      % 年份不加粗   % 加粗斜体则用 {\textbf{\textit{#1}}}
+    \DeclareFieldFormat*{title}{#1}     % 标题不斜体
+   % \DeclareFieldFormat*[article]{journaltitle}{#1}  % 期刊名不斜体
+    \DeclareFieldFormat*[article]{volume}{#1}  % 期刊vol不斜体
+   % \DeclareFieldFormat*[inproceedings]{booktitle}{#1}  % 会议名不斜体
+    \makeatother
+
 \usepackage{graphicx,amsfonts,stfloats,color,multirow,booktabs,epsfig,pdfpages,bm,array}
 \usepackage{diagbox}
 \usepackage[linesnumbered,ruled]{algorithm2e}
@@ -95,6 +104,8 @@
     \def\@dotsep{0.1}
     \makeatother
 	\tableofcontents
+
+
 
     % 插图目录、表格目录
    % \makeatletter

@@ -132,7 +132,6 @@ KISSME算法的优点在于可以直接求解出度量矩阵，计算简单快速，不需要繁杂的迭代优化过
   \includegraphics[width=.8\textwidth]{figure/fig_tmtl_framework.eps}
   \bicaption[多任务度量学习人脸辨识框架]{多任务度量学习人脸辨识框架~\label{fig_tmtl_framework}}{Framework of multi-task metric learning for face identification}
 \end{figure}
- \vspace{-2em}
 
 定义$k\in\left\{1,2,...,K\right\}$是第一层的第$k$种特征。对每个特征类型的每个子任务，以共享度量矩阵$\mathbf{M}^k_0$和特定矩阵$\mathbf{M}^k_t$相结合的形式，计算任务$t\in\left\{1,2,...,T\right\}$的度量矩阵。即第一层为选择对应的特征，第二层是在第一层选定的特征下进行多任务学习。因为我们考虑的是人脸辨识问题，将人脸辨识问题转化为多任务学习是基于这样的观察：大部分的人脸都包含共同的相似的区域，而每个人脸的表达是公共的部分和特有部分的叠加。因此，给出一对训练样本，其距离定义为：
 \begin{equation}

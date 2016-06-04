@@ -7,7 +7,7 @@
 \begin{figure}[ht]
     \centering
     \centerline{\includegraphics[width=15.6cm]{./figure/fig_verification_vs_identification.eps}}
-    \bicaption{人脸确认（1:1）与人脸辨识 (1:N)}{Faec Verification (1:1) vs. Face Identification (1:N) }\label{fig_verification_vs_identification}
+    \bicaption{人脸确认（1:1）与人脸辨识 (1:N)}{Face Verification (1:1) vs. Face Identification (1:N) }\label{fig_verification_vs_identification}
 \end{figure}
 
 人脸识别技术主要分为两类：人脸确认（Face Verification）和人脸辨识（Face Identification）。人脸确认是判断两张已知的人脸图像是不是同一个人的技术。人脸辨识是指鉴别某张人脸图像身份的技术，即确定一张给定人脸图片的身份类别标签。如图\ref{fig_verification_vs_identification}所示，其中图\ref{fig_verification_vs_identification}. (a)表示人脸确认，即判断两张图片是否是同一个人，即1:1的任务，本质上可以看成一个二分类问题。人脸确认技术可被用于登陆验证、身份识别等应用场景。帮助用户快速判定两张照片是否为同一个人、判定视频中的人脸是否为目标人脸并支持实时识别认证，还可以实现身份和人脸绑定等功能。而图\ref{fig_verification_vs_identification}. (b)表示人脸辨识任务，即要判断其身份类别，其难度随着人数规模而增加，即1:N的任务，其本质上是一个多分类问题。通过人脸辨识可以实现安防检查、VIP识别、照片自动圈人、人脸登陆、出入控制等多种功能。研究人脸识别在理论技术和行业应用方面都有重要意义。
@@ -73,12 +73,11 @@
 
 1、美国Animetrics公司ForensicaGPS人脸识别工具\footnote{\url{http://animetrics.com/forensicagps/}}
 
-美国Animetrics是一家专注3D人脸识别技术的公司。其推出的一款新的人脸识别工具——ForensicaGPS，该产品最大的优势在于能够对低分辨率的监控图像或视频人脸识别。在监控场景中，面临着图像质量不清晰、分辨率低、人脸姿态变化多样等特点，Animetrics则有效地解决了上述场景下的人脸识别。ForensicaGPS核心技术在于能将低分辨率的2D人脸图像转化为经人脸姿态校正处理后的3D图像，这样可以更加容易地识别嫌犯。
-
-此外，ForensicaGPS系统还能帮助执法人员将人脸图像与嫌犯数据库做比对，即人脸确认，并最终确定匹配结果。ForensicaGPS能同时分析、比对多达5个有关某嫌犯的人脸图像，能对面部结构、几何特征与皮肤纹理进行2D、3D可视化处理，能识别脸部疤痕、痣、纹身等特征，并进行脸部特征距离计算等。据Animetrics称，目前该公司已经与DataworksPlus和BI2 Technologies等执法技术方案提供商合作，向美国国内执法机构提供ForensicaGPS产品。此外，Animetrics还与欧洲执法技术经销商德国UNIDAS公司、瑞士UMC Forensics GmBH公司等一道共同推广该产品的应用。目前，ForensicaGPS已经被瑞士、卡塔尔、阿联酋和沙特阿拉伯等国家的警察部门采用，如下图\ref{fig_forensicaGPS}所示。
+美国Animetrics是一家专注3D人脸识别技术的公司。其推出的一款新的人脸识别工具——ForensicaGPS，该产品最大的优势在于能够对低分辨率的监控图像或视频人脸识别。在监控场景中，面临着图像质量不清晰、分辨率低、人脸姿态变化多样等特点，Animetrics则有效地解决了上述场景下的人脸识别。ForensicaGPS核心技术在于能将低分辨率的2D人脸图像转化为经人脸姿态校正处理后的3D图像，这样可以更加容易地识别嫌犯。此外，ForensicaGPS系统还能帮助执法人员将人脸图像与嫌犯数据库做比对，即人脸确认，并最终确定匹配结果。如下图\ref{fig_forensicaGPS}所示。
+%ForensicaGPS能同时分析、比对多达5个有关某嫌犯的人脸图像，能对面部结构、几何特征与皮肤纹理进行2D、3D可视化处理，能识别脸部疤痕、痣、纹身等特征，并进行脸部特征距离计算等。据Animetrics称，目前该公司已经与DataworksPlus和BI2 Technologies等执法技术方案提供商合作，向美国国内执法机构提供ForensicaGPS产品。此外，Animetrics还与欧洲执法技术经销商德国UNIDAS公司、瑞士UMC Forensics GmBH公司等一道共同推广该产品的应用。目前，ForensicaGPS已经被瑞士、卡塔尔、阿联酋和沙特阿拉伯等国家的警察部门采用
 \begin{figure}[h]
     \centering
-    \centerline{\includegraphics[width=15.6cm]{./figure/fig_forensicaGPS.eps}}
+    \centerline{\includegraphics[width=15cm]{./figure/fig_forensicaGPS.eps}}
     %\caption{美国ForensicaGPS智能监控人脸识别系统}
     \bicaption{美国ForensicaGPS智能监控人脸识别系统 }{American ForensicaGPS Facial Analysis System }\label{fig_forensicaGPS}
 \end{figure}

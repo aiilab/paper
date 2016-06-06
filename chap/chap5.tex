@@ -53,7 +53,7 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 \end{tabular}
 \end{table}
 
-由表\ref{table_roc}可以得到总共有四个指标。ROC曲线主要依据两个指标画出曲线，其中ROC曲线中横轴为误检率(False Positive Rate,~FPR)，纵轴表示检测率，即真正类率(True Positive Rate,~TPR)。曲线当中的一个点表示在当前误检率下的检测准确率。在理想的情况下，我们希望这个曲线我误检率为0，而检测率为1，所以理想的曲线应该是$y=1$的一条直线。而实际的情况当中，为了更加直观的表示算法性能，一般将各个算法曲线放在同一个图中，若曲线越靠近左上方，说明算法的性能越好。在做ROC曲线时，对于每一个检测或者分类的滑动窗口区域，都会有一个置信度得分，而检测出的窗口和实际标记的覆盖表示了预测结果为人脸或者是非人脸，那么根据置信度而选择不同的阈值，则便可以得到ROC曲线。ROC曲线不仅仅适用于人脸检测问题的评价，而且适用于任意二分类问题，因为人脸检测在此被当作一个二分类问题。在后续的人脸确认任务当中，其也是一个二分类问题，即判断是或者不是同一个人，所以ROC曲线还适用于人脸确认任务的性能评价。
+由表\ref{table_roc}可以得到总共有四个指标。ROC曲线主要依据两个指标得到曲线，其中曲线中横轴为误检率(False Positive Rate,~FPR)，纵轴表示检测率，即真正类率(True Positive Rate,~TPR)。曲线当中的一个点表示在当前误检率下的检测准确率。在理想的情况下，我们希望这个曲线我误检率为0，而检测率为1，所以理想的曲线应该是$y=1$的一条直线。而实际的情况当中，为了更加直观的表示算法性能，一般将各个算法曲线放在同一个图中，若曲线越靠近左上方，说明算法的性能越好。在做ROC曲线时，对于每一个检测或者分类的滑动窗口区域，都会有一个置信度得分，而检测出的窗口和实际标记的覆盖表示了预测结果为人脸或者是非人脸，那么根据置信度而选择不同的阈值，则便可以得到ROC曲线。ROC曲线不仅仅适用于人脸检测问题的评价，而且适用于任意二分类问题，因为人脸检测在此被当作一个二分类问题。在后续的人脸确认任务当中，其也是一个二分类问题，即判断是或者不是同一个人，所以ROC曲线还适用于人脸确认任务的性能评价。
 
 与ROC曲线相关的另一个指标是ROC曲线所覆盖的面积（Area Under roc Curve,~AUC）。理想的情况下，我们希望AUC越接近1越好。AUC是一个数值，通过这样一个数值可以简单直观的表示一个分类器的性能，并可以比较出算法的性能。
 
@@ -61,7 +61,8 @@ FDDB是在无限制真实条件下获取的人脸图片，其中包含了遮挡、不同角度、低分辨率等照片
 
 大部分应用领域需要实时地检测人脸，如人脸检测、人脸跟踪，视频监控等。在满足一定检测率和误检率的条件下，检测速度越快越好。算法执行效率在理论层面有算法复杂度的分析。在实际测试过程当中，对给定配置的机型，在相同条件下，对$N$张指定大小的图片进行测试，得到总用时为$Ts$，则可得到算法检测帧率为$\frac{N}{T}fps$。
 \subsection{实验结果和分析}
-实验采用了离散的方案在FDDB上进行人脸检测算法的评估。为此，我们和FDDB上最新的已经发表的结果\supercite{li2013learning,chen2014joint,yang2015convolutional,ranjan2015deep,Vijay2015Visual} 进行比较，与学术界己发表的算法的比较结果如图\ref{fig_publised}所示，与商业系统的比较结果如图\ref{fig_unpublised}所示。
+实验采用了离散的方案在FDDB上进行人脸检测算法性能的评估和其他方法的对比。为此，我们和FDDB上最新的已经发表的结果
+\supercite{li2013learning,chen2014joint,yang2015convolutional,ranjan2015deep,Vijay2015Visual} 进行比较，与学术界己发表的算法的比较结果如图\ref{fig_publised}所示，与商业系统的比较结果如图\ref{fig_unpublised}所示。
 \begin{figure}[!ht] \centering
   \includegraphics[width=.9\textwidth]{figure/fig_fddb_result_1.eps}
   \bicaption[与学术界己发表的算法的比较结果]{学术界己发表的算法的比较结果~\label{fig_publised}}{Comparison with published methods}
@@ -190,7 +191,6 @@ Human & 3.3 & 0\% & - \\
   \includegraphics[width=.8\textwidth]{figure/fig_landmark_results.eps}
   \bicaption[人脸特征点定位结果示例]{人脸特征点定位结果示例~\label{fig_landmark_results}}{Example result of the two dataset}
 \end{figure}
-
 \section{人脸识别结果与分析}
 \subsection{实验数据库与设置}
 \textbf{LFW}\supercite{huang2007labeled}：LFW（Labeled Faces in the Wild）数据库是由美国马萨诸塞大学（ University of Massachusetts）阿姆斯特分校（ Amherst ）计算机视觉实验室整理完成，对应文章为一篇技术报告，该实验室还共同维护了上文讲到的FDDB人脸检测基准数据库。其主要目的用于研究非受限情形下的人脸识别问题，且现已成为学术界和工业界评价人脸识别性能的基准数据集（benchmark）。LFW包含了13233张自然状态下人脸图片，其大多为名人，包含了5749个人，其中4069个人只有一张图片，1680个人多于一张图片。LFW 的测试任务是判断一对人脸照片是来自同一个人还是不同的人。测试集包含 6000 对人脸图像。对于人脸识别问题，包含人脸确认（Face Verification）和人脸辨识（Face Identification）两个任务，在该数据库上，主要是人脸确认的任务。在我们的实验过程当中，利用该数据库测试了基于KISSME的人脸确认任务，其目的在于验证其度量方式的有效性。LFW数据库样例图片如下图\ref{fig_lfw_dataset}所示。可以看出，该数据库包含了多姿态、表情、光照和部分遮挡情况下的人脸图片，其难点与监控环境下的人脸识别面对的挑战一致。
